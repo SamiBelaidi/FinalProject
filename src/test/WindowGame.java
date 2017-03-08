@@ -156,7 +156,7 @@ public class WindowGame extends BasicGame {
         mario.gravity();
         gererCollisionGround();
     }
-    
+
     private void creerRectangleGround(Graphics g) {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
@@ -176,12 +176,11 @@ public class WindowGame extends BasicGame {
         }
     }
 
-    private void gererCollisionGround() {
+    private void gererCollisionGround() throws SlickException {
 
         int x = (int) (mario.getX()) / this.map.getTileWidth();
         int y = (int) (mario.getY() + 16) / this.map.getTileHeight();
         Image tile = this.map.getTileImage(x, y, this.map.getLayerIndex("Ground"));
-        int z = this.map.getTileId(x, y, this.map.getLayerIndex("Ground"));
         boolean collision1 = tile != null;
         /* x = (int) (mario.getX() + 16) / this.map.getTileWidth();
         y = (int) (mario.getY() + 16) / this.map.getTileHeight();
