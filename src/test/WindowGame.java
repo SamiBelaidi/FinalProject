@@ -5,14 +5,16 @@
  */
 package test;
 
+import java.util.ArrayList;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.BasicGame;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import test.Mario.State;
+import org.newdawn.slick.geom.Rectangle;
 
 /**
  *
@@ -20,6 +22,9 @@ import test.Mario.State;
  */
 public class WindowGame extends BasicGame {
 
+    private boolean rectVisible;
+    private Rectangle rectangle;
+    private ArrayList<Rectangle> listeRectanglesGround = new ArrayList();
     private int compteur = 0;
     int i = 0;
     private GameContainer container;
@@ -32,6 +37,7 @@ public class WindowGame extends BasicGame {
         super("Maxime Meloche");
         this.height = height;
         this.width = width;
+
     }
 
     public int getWidth() {
@@ -90,7 +96,7 @@ public class WindowGame extends BasicGame {
                 mario.setMoving(true);
                 break;
             case Input.KEY_DOWN:
-                mario.setY(mario.getY() + 3);
+
                 break;
             case Input.KEY_UP:
                 if (mario.isaTerre()) {
@@ -98,13 +104,18 @@ public class WindowGame extends BasicGame {
                     mario.setState(Mario.State.JUMP);
                 }
                 break;
+            case Input.KEY_V:
+                rectVisible = !rectVisible;
+                break;
         }
 
     }
 
     @Override
     public void render(GameContainer container, Graphics g) throws SlickException {
+
         this.map.render(map.getRenderX(), map.getRenderY());
+        creerRectangleGround(g);
         g.drawAnimation(mario.getAnimation(), mario.getX(), mario.getY());
         try {
             Thread.sleep(10);
@@ -114,7 +125,7 @@ public class WindowGame extends BasicGame {
 
     @Override
     public void update(GameContainer container, int delta) throws SlickException {
-
+        /*
         int x = (int) (mario.getX()) / this.map.getTileWidth();
         int y = (int) (mario.getY()) / this.map.getTileHeight();
         Image tile = this.map.getTileImage(x, y, this.map.getLayerIndex("Surprise"));
@@ -139,10 +150,30 @@ public class WindowGame extends BasicGame {
             mario.setMoving(false);
         } else {
             mario.bouger();
-        }
+        }*/
+        mario.bouger();
         mario.updateAnimation();
         mario.gravity();
         gererCollisionGround();
+    }
+    
+    private void creerRectangleGround(Graphics g) {
+        for (int i = 0; i < map.getWidth(); i++) {
+            for (int j = 0; j < map.getHeight(); j++) {
+                if (map.getTileId(i, j, this.map.getLayerIndex("Ground")) == 49) {
+                    rectangle = new Rectangle(i * 16, j * 16, 16, 16);
+                    listeRectanglesGround.add(rectangle);
+
+                    if (rectVisible) {
+                        g.setColor(Color.yellow);
+                    } else {
+                        g.setColor(Color.transparent);
+                    }
+                    g.draw(rectangle);
+
+                }
+            }
+        }
     }
 
     private void gererCollisionGround() {
@@ -150,14 +181,14 @@ public class WindowGame extends BasicGame {
         int x = (int) (mario.getX()) / this.map.getTileWidth();
         int y = (int) (mario.getY() + 16) / this.map.getTileHeight();
         Image tile = this.map.getTileImage(x, y, this.map.getLayerIndex("Ground"));
+        int z = this.map.getTileId(x, y, this.map.getLayerIndex("Ground"));
         boolean collision1 = tile != null;
-
-        x = (int) (mario.getX() + 16) / this.map.getTileWidth();
+        /* x = (int) (mario.getX() + 16) / this.map.getTileWidth();
         y = (int) (mario.getY() + 16) / this.map.getTileHeight();
         tile = this.map.getTileImage(x, y, this.map.getLayerIndex("Ground"));
         boolean collision2 = tile != null;
-
-        if (collision1 || collision2) {
+         */
+        if (collision1) {
             mario.setaTerre(true);
             if (compteur == 0) {
                 mario.setState(Mario.State.GROUND);
