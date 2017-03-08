@@ -19,8 +19,7 @@ import test.Mario.State;
  * @author Sami
  */
 public class WindowGame extends BasicGame {
-// sup Sami
-    Allo
+
             
     private int compteur = 0;
     int i = 0;
