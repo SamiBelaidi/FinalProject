@@ -20,6 +20,8 @@ import test.Mario.State;
  */
 public class WindowGame extends BasicGame {
 // sup Sami
+    Allo
+            
     private int compteur = 0;
     int i = 0;
     private GameContainer container;
