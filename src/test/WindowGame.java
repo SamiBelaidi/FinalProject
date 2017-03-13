@@ -25,6 +25,11 @@ public class WindowGame extends BasicGame {
     private boolean rectVisible;
     private Rectangle rectangle;
     private ArrayList<Rectangle> listeRectanglesGround = new ArrayList();
+    private ArrayList<Rectangle> listeRectanglesSurprise = new ArrayList();
+    private ArrayList<Rectangle> listeRectanglesTube = new ArrayList();
+    private ArrayList<Rectangle> listeRectanglesBloc = new ArrayList();
+    private ArrayList<Rectangle> listeRectanglesFlag = new ArrayList();
+
     private int compteur = 0;
     int i = 0;
     private GameContainer container;
@@ -126,31 +131,31 @@ public class WindowGame extends BasicGame {
     @Override
     public void update(GameContainer container, int delta) throws SlickException {
         /*
-        int x = (int) (mario.getX()) / this.map.getTileWidth();
-        int y = (int) (mario.getY()) / this.map.getTileHeight();
-        Image tile = this.map.getTileImage(x, y, this.map.getLayerIndex("Surprise"));
-        boolean collision1 = tile != null;
+         int x = (int) (mario.getX()) / this.map.getTileWidth();
+         int y = (int) (mario.getY()) / this.map.getTileHeight();
+         Image tile = this.map.getTileImage(x, y, this.map.getLayerIndex("Surprise"));
+         boolean collision1 = tile != null;
 
-        x = (int) (mario.getX() + 16) / this.map.getTileWidth();
-        y = (int) (mario.getY()) / this.map.getTileHeight();
-        tile = this.map.getTileImage(x, y, this.map.getLayerIndex("Surprise"));
-        boolean collision2 = tile != null;
+         x = (int) (mario.getX() + 16) / this.map.getTileWidth();
+         y = (int) (mario.getY()) / this.map.getTileHeight();
+         tile = this.map.getTileImage(x, y, this.map.getLayerIndex("Surprise"));
+         boolean collision2 = tile != null;
 
-        x = (int) (mario.getX() + 16) / this.map.getTileWidth();
-        y = (int) (mario.getY() + 16) / this.map.getTileHeight();
-        tile = this.map.getTileImage(x, y, this.map.getLayerIndex("Surprise"));
-        boolean collision3 = tile != null;
+         x = (int) (mario.getX() + 16) / this.map.getTileWidth();
+         y = (int) (mario.getY() + 16) / this.map.getTileHeight();
+         tile = this.map.getTileImage(x, y, this.map.getLayerIndex("Surprise"));
+         boolean collision3 = tile != null;
 
-        x = (int) (mario.getX()) / this.map.getTileWidth();
-        y = (int) (mario.getY() + 16) / this.map.getTileHeight();
-        tile = this.map.getTileImage(x, y, this.map.getLayerIndex("Surprise"));
-        boolean collision4 = tile != null;
+         x = (int) (mario.getX()) / this.map.getTileWidth();
+         y = (int) (mario.getY() + 16) / this.map.getTileHeight();
+         tile = this.map.getTileImage(x, y, this.map.getLayerIndex("Surprise"));
+         boolean collision4 = tile != null;
 
-        if (collision1 || collision2 || collision3 || collision4) {
-            mario.setMoving(false);
-        } else {
-            mario.bouger();
-        }*/
+         if (collision1 || collision2 || collision3 || collision4) {
+         mario.setMoving(false);
+         } else {
+         mario.bouger();
+         }*/
         mario.bouger();
         mario.updateAnimation();
         mario.gravity();
@@ -176,6 +181,82 @@ public class WindowGame extends BasicGame {
         }
     }
 
+    private void creerRectangleSurprise(Graphics g) {
+        for (int i = 0; i < map.getWidth(); i++) {
+            for (int j = 0; j < map.getHeight(); j++) {
+                if (map.getTileId(i, j, this.map.getLayerIndex("Surprise")) == 253) {
+                    rectangle = new Rectangle(i * 16, j * 16, 16, 16);
+                    listeRectanglesSurprise.add(rectangle);
+
+                    if (rectVisible) {
+                        g.setColor(Color.yellow);
+                    } else {
+                        g.setColor(Color.transparent);
+                    }
+                    g.draw(rectangle);
+
+                }
+            }
+        }
+    }
+
+    private void creerRectangleTube(Graphics g) {
+        for (int i = 0; i < map.getWidth(); i++) {
+            for (int j = 0; j < map.getHeight(); j++) {
+                if (map.getTileId(i, j, this.map.getLayerIndex("Bloc")) == (42 | 43 |61 |62)) {
+                    rectangle = new Rectangle(i * 16, j * 16, 16, 16);
+                    listeRectanglesTube.add(rectangle);
+
+                    if (rectVisible) {
+                        g.setColor(Color.yellow);
+                    } else {
+                        g.setColor(Color.transparent);
+                    }
+                    g.draw(rectangle);
+
+                }
+            }
+        }
+    }
+    
+    private void creerRectangleBloc(Graphics g) {
+        for (int i = 0; i < map.getWidth(); i++) {
+            for (int j = 0; j < map.getHeight(); j++) {
+                if (map.getTileId(i, j, this.map.getLayerIndex("Bloc")) == 3) {
+                    rectangle = new Rectangle(i * 16, j * 16, 16, 16);
+                    listeRectanglesBloc.add(rectangle);
+
+                    if (rectVisible) {
+                        g.setColor(Color.yellow);
+                    } else {
+                        g.setColor(Color.transparent);
+                    }
+                    g.draw(rectangle);
+
+                }
+            }
+        }
+    }
+    
+    private void creerRectangleFlag(Graphics g) {
+        for (int i = 0; i < map.getWidth(); i++) {
+            for (int j = 0; j < map.getHeight(); j++) {
+                if (map.getTileId(i, j, this.map.getLayerIndex("Bloc")) == 5) {
+                    rectangle = new Rectangle(i * 16, j * 16, 16, 16);
+                    listeRectanglesFlag.add(rectangle);
+
+                    if (rectVisible) {
+                        g.setColor(Color.yellow);
+                    } else {
+                        g.setColor(Color.transparent);
+                    }
+                    g.draw(rectangle);
+
+                }
+            }
+        }
+    }
+
     private void gererCollisionGround() throws SlickException {
 
         int x = (int) (mario.getX()) / this.map.getTileWidth();
@@ -183,9 +264,9 @@ public class WindowGame extends BasicGame {
         Image tile = this.map.getTileImage(x, y, this.map.getLayerIndex("Ground"));
         boolean collision1 = tile != null;
         /* x = (int) (mario.getX() + 16) / this.map.getTileWidth();
-        y = (int) (mario.getY() + 16) / this.map.getTileHeight();
-        tile = this.map.getTileImage(x, y, this.map.getLayerIndex("Ground"));
-        boolean collision2 = tile != null;
+         y = (int) (mario.getY() + 16) / this.map.getTileHeight();
+         tile = this.map.getTileImage(x, y, this.map.getLayerIndex("Ground"));
+         boolean collision2 = tile != null;
          */
         if (collision1) {
             mario.setaTerre(true);
