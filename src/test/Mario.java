@@ -18,7 +18,7 @@ import org.newdawn.slick.SpriteSheet;
 public class Mario {
 
     private int x = 5, y = 100, vitesseX = 3, vitesseY = 0;
-
+    private FakeRectangle rectangle;
     private boolean goingRight, big;
     private boolean moving = false;
     private Animation[] animations = new Animation[20];
@@ -28,6 +28,7 @@ public class Mario {
     private Map map;
     private WindowGame window;
     private boolean conditionThread, aTerre = false;
+    private boolean rectVisible;
 
     public enum State {
         CROUCH,
@@ -45,6 +46,11 @@ public class Mario {
         positionAnimation = 1;
         this.map = map;
         this.window = window;
+        if (isBig()) {
+            rectangle = new FakeRectangle(x, y, 16, 32);
+        } else {
+            rectangle = new FakeRectangle(x, y, 16, 16);
+        }
     }
 
     public void setAnimation(Animation animation) {
@@ -124,6 +130,23 @@ public class Mario {
 
     public void setBig(boolean big) {
         this.big = big;
+        if (isBig()) {
+            rectangle = new FakeRectangle(x, y, 16, 32);
+        } else {
+            rectangle = new FakeRectangle(x, y, 16, 16);
+        }
+    }
+
+    public boolean isRectVisible() {
+        return rectVisible;
+    }
+
+    public void setRectVisible(boolean rectVisible) {
+        this.rectVisible = rectVisible;
+    }
+
+    public FakeRectangle getRectangle() {
+        return rectangle;
     }
 
     public void setState(State state) {
@@ -177,13 +200,15 @@ public class Mario {
     }
 
     public void bouger() {
+        rectangle.setX(x);
+        rectangle.setY(y);
         if (isMoving()) {
             if (isGoingRight()) {
                 if (x < (window.getWidth() / 3)) {
                     vitesseX = 1;
                 } else {
                     vitesseX = 1;
-                    //  map.avancer();
+                    //   map.avancer();
                 }
             } else {
                 vitesseX = -1;
