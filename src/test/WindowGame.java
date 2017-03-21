@@ -253,21 +253,28 @@ public class WindowGame extends BasicGame {
     }
 
     private void gererCollisionGround() throws SlickException {
+        FakeRectangle x = null;
         boolean collision1 = false;
         for (int i = 0; i < listeRectanglesGround.size(); i++) {
-            FakeRectangle x = listeRectanglesGround.get(i);
-            if (mario.getRectangle().getBounds().intersects(x.getX(), x.getY() + 14, x.getWidth(), x.getHeight())) {
+            x = listeRectanglesGround.get(i);
+            if (mario.getRectangle().getBounds().intersects(x.getX(), x.getY() - 2, x.getWidth(), x.getHeight())) {
                 collision1 = true;
+                System.out.println("Mario: " + mario.getRectangle().getBounds());
+                System.out.println("Rect : " + x.getBounds());
                 break;
             }
         }
 
         if (collision1) {
-            mario.setaTerre(true);
-            if (compteur == 0) {
-                mario.setState(Mario.State.GROUND);
+            if (mario.getY() > x.getY()) {
+                mario.setConditionThread(false);
+            } else {
+                mario.setaTerre(true);
+                if (compteur == 0) {
+                    mario.setState(Mario.State.GROUND);
+                }
+                compteur++;
             }
-            compteur++;
         } else {
             compteur = 0;
             mario.setaTerre(false);
