@@ -259,13 +259,20 @@ public class WindowGame extends BasicGame {
             x = listeRectanglesGround.get(i);
             if (mario.getRectangle().getBounds().intersects(x.getX(), x.getY() - 2, x.getWidth(), x.getHeight())) {
                 collision1 = true;
-                System.out.println("Mario: " + mario.getRectangle().getBounds());
-                System.out.println("Rect : " + x.getBounds());
+            //    System.out.println("Mario: " + mario.getRectangle().getBounds());
+             //   System.out.println("Rect : " + x.getBounds());
                 break;
             }
         }
 
         if (collision1) {
+            /*     if (mario.getX() < x.getX())  {
+                mario.setMoving(false);
+            } else if (mario.getX() > x.getX() + 14) {
+                mario.setMoving(false);
+            }*/
+            System.out.println("mario.getY " + mario.getY());
+            System.out.println("x.getY()   " + x.getY());
             if (mario.getY() > x.getY()) {
                 mario.setConditionThread(false);
             } else {
@@ -275,6 +282,7 @@ public class WindowGame extends BasicGame {
                 }
                 compteur++;
             }
+
         } else {
             compteur = 0;
             mario.setaTerre(false);
