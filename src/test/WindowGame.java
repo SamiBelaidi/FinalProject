@@ -14,7 +14,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Rectangle;
 
 /**
  *
@@ -23,12 +22,13 @@ import org.newdawn.slick.geom.Rectangle;
 public class WindowGame extends BasicGame {
 
     private boolean rectVisible;
-    private Rectangle rectangle;
-    private ArrayList<Rectangle> listeRectanglesGround = new ArrayList();
-    private ArrayList<Rectangle> listeRectanglesSurprise = new ArrayList();
-    private ArrayList<Rectangle> listeRectanglesTube = new ArrayList();
-    private ArrayList<Rectangle> listeRectanglesBloc = new ArrayList();
-    private ArrayList<Rectangle> listeRectanglesFlag = new ArrayList();
+    private FakeRectangle rectangle;
+    private ArrayList<ArrayList<FakeRectangle>> listeRectangles = new ArrayList();
+    private ArrayList<FakeRectangle> listeRectanglesGround = new ArrayList();
+    private ArrayList<FakeRectangle> listeRectanglesSurprise = new ArrayList();
+    private ArrayList<FakeRectangle> listeRectanglesTube = new ArrayList();
+    private ArrayList<FakeRectangle> listeRectanglesBloc = new ArrayList();
+    private ArrayList<FakeRectangle> listeRectanglesFlag = new ArrayList();
 
     private int compteur = 0;
     int i = 0;
@@ -43,6 +43,14 @@ public class WindowGame extends BasicGame {
         this.height = height;
         this.width = width;
 
+    }
+
+    private void fillListeRectangles() {
+        listeRectangles.add(listeRectanglesBloc);
+        listeRectangles.add(listeRectanglesFlag);
+        listeRectangles.add(listeRectanglesGround);
+        listeRectangles.add(listeRectanglesSurprise);
+        listeRectangles.add(listeRectanglesTube);
     }
 
     public int getWidth() {
@@ -111,6 +119,7 @@ public class WindowGame extends BasicGame {
                 break;
             case Input.KEY_V:
                 rectVisible = !rectVisible;
+                mario.setRectVisible(!mario.isRectVisible());
                 break;
         }
 
@@ -121,6 +130,9 @@ public class WindowGame extends BasicGame {
 
         this.map.render(map.getRenderX(), map.getRenderY());
         creerRectangleGround(g);
+        creerRectangleSurprise(g);
+        drawMarioRect(g);
+        // creerRectangleTube(g);
         g.drawAnimation(mario.getAnimation(), mario.getX(), mario.getY());
         try {
             Thread.sleep(10);
@@ -130,43 +142,27 @@ public class WindowGame extends BasicGame {
 
     @Override
     public void update(GameContainer container, int delta) throws SlickException {
-        /*
-         int x = (int) (mario.getX()) / this.map.getTileWidth();
-         int y = (int) (mario.getY()) / this.map.getTileHeight();
-         Image tile = this.map.getTileImage(x, y, this.map.getLayerIndex("Surprise"));
-         boolean collision1 = tile != null;
 
-         x = (int) (mario.getX() + 16) / this.map.getTileWidth();
-         y = (int) (mario.getY()) / this.map.getTileHeight();
-         tile = this.map.getTileImage(x, y, this.map.getLayerIndex("Surprise"));
-         boolean collision2 = tile != null;
-
-         x = (int) (mario.getX() + 16) / this.map.getTileWidth();
-         y = (int) (mario.getY() + 16) / this.map.getTileHeight();
-         tile = this.map.getTileImage(x, y, this.map.getLayerIndex("Surprise"));
-         boolean collision3 = tile != null;
-
-         x = (int) (mario.getX()) / this.map.getTileWidth();
-         y = (int) (mario.getY() + 16) / this.map.getTileHeight();
-         tile = this.map.getTileImage(x, y, this.map.getLayerIndex("Surprise"));
-         boolean collision4 = tile != null;
-
-         if (collision1 || collision2 || collision3 || collision4) {
-         mario.setMoving(false);
-         } else {
-         mario.bouger();
-         }*/
         mario.bouger();
         mario.updateAnimation();
         mario.gravity();
         gererCollisionGround();
     }
 
+    private void drawMarioRect(Graphics g) {
+        if (mario.isRectVisible()) {
+            g.setColor(Color.yellow);
+        } else {
+            g.setColor(Color.transparent);
+        }
+        g.draw(mario.getRectangle());
+    }
+
     private void creerRectangleGround(Graphics g) {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
                 if (map.getTileId(i, j, this.map.getLayerIndex("Ground")) == 49) {
-                    rectangle = new Rectangle(i * 16, j * 16, 16, 16);
+                    rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
                     listeRectanglesGround.add(rectangle);
 
                     if (rectVisible) {
@@ -185,7 +181,7 @@ public class WindowGame extends BasicGame {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
                 if (map.getTileId(i, j, this.map.getLayerIndex("Surprise")) == 253) {
-                    rectangle = new Rectangle(i * 16, j * 16, 16, 16);
+                    rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
                     listeRectanglesSurprise.add(rectangle);
 
                     if (rectVisible) {
@@ -203,8 +199,8 @@ public class WindowGame extends BasicGame {
     private void creerRectangleTube(Graphics g) {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
-                if (map.getTileId(i, j, this.map.getLayerIndex("Bloc")) == (42 | 43 |61 |62)) {
-                    rectangle = new Rectangle(i * 16, j * 16, 16, 16);
+                if (map.getTileId(i, j, this.map.getLayerIndex("Bloc")) == (42 | 43 | 61 | 62)) {
+                    rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
                     listeRectanglesTube.add(rectangle);
 
                     if (rectVisible) {
@@ -218,12 +214,12 @@ public class WindowGame extends BasicGame {
             }
         }
     }
-    
+
     private void creerRectangleBloc(Graphics g) {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
                 if (map.getTileId(i, j, this.map.getLayerIndex("Bloc")) == 3) {
-                    rectangle = new Rectangle(i * 16, j * 16, 16, 16);
+                    rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
                     listeRectanglesBloc.add(rectangle);
 
                     if (rectVisible) {
@@ -237,14 +233,13 @@ public class WindowGame extends BasicGame {
             }
         }
     }
-    
+
     private void creerRectangleFlag(Graphics g) {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
                 if (map.getTileId(i, j, this.map.getLayerIndex("Bloc")) == 5) {
-                    rectangle = new Rectangle(i * 16, j * 16, 16, 16);
+                    rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
                     listeRectanglesFlag.add(rectangle);
-
                     if (rectVisible) {
                         g.setColor(Color.yellow);
                     } else {
@@ -258,16 +253,15 @@ public class WindowGame extends BasicGame {
     }
 
     private void gererCollisionGround() throws SlickException {
+        boolean collision1 = false;
+        for (int i = 0; i < listeRectanglesGround.size(); i++) {
+            FakeRectangle x = listeRectanglesGround.get(i);
+            if (mario.getRectangle().getBounds().intersects(x.getX(), x.getY() + 14, x.getWidth(), x.getHeight())) {
+                collision1 = true;
+                break;
+            }
+        }
 
-        int x = (int) (mario.getX()) / this.map.getTileWidth();
-        int y = (int) (mario.getY() + 16) / this.map.getTileHeight();
-        Image tile = this.map.getTileImage(x, y, this.map.getLayerIndex("Ground"));
-        boolean collision1 = tile != null;
-        /* x = (int) (mario.getX() + 16) / this.map.getTileWidth();
-         y = (int) (mario.getY() + 16) / this.map.getTileHeight();
-         tile = this.map.getTileImage(x, y, this.map.getLayerIndex("Ground"));
-         boolean collision2 = tile != null;
-         */
         if (collision1) {
             mario.setaTerre(true);
             if (compteur == 0) {
