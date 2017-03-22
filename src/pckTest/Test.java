@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package test;
+package pckTest;
 
 import java.io.File;
 import org.newdawn.slick.AppGameContainer;
