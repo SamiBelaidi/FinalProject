@@ -6,11 +6,6 @@
  <tileset firstgid="229" name="52571" tilewidth="16" tileheight="16" tilecount="924" columns="33">
   <image source="smb_tiles_2.png" width="528" height="448"/>
  </tileset>
- <layer name="Breakable block" width="206" height="16">
-  <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3XQQoAIQgAwKAX9f/P7XUvRpC1uMxAeLHUbrYGAAAAAHDWmJwo76ZZ3S/6AQCASkYQs/VD767YnS26l/VXlXeW985VeQ4AAADg/x73SUgDgDMAAA==
-  </data>
- </layer>
  <layer name="Flag" width="206" height="16">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAC+3TsQ0AIAwEsTRI7D8xM3wVEtkTXHNVAAAA/7jdATDQ6Q6AgXwDOd9AzjeQ8w3kfAM530DON5DzDQDAPg877TCCgDMAAA==
@@ -33,7 +28,7 @@
  </layer>
  <layer name="Ground" width="206" height="16">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3QsQkAMAwDsLzU/5/r1D7gKVgCjwnYMwAAAAAAAAAAAAAAOx35STdp37W5e3Oe9D75sTlN3S/j5VB4gDMAAA==
+   H4sIAAAAAAAAC+3Zuw3AIAwFQFZi/+VSpTSNCZHxnWTR8PMTHWMAAAAAAHxrLiqad9Lq3D/uAwAAlcxgvEm2t2jdrqyqZ37z2wEA4IzVP0S3ymbSPdfOvXeuV3Z9Zo/K1an3B5FFnsOAMwAA
   </data>
  </layer>
  <layer name="Background" width="206" height="16">
