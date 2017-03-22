@@ -132,7 +132,7 @@ public class WindowGame extends BasicGame {
         creerRectangleGround(g);
         creerRectangleSurprise(g);
         drawMarioRect(g);
-        // creerRectangleTube(g);
+         creerRectangleTube(g);
         g.drawAnimation(mario.getAnimation(), mario.getX(), mario.getY());
         try {
             Thread.sleep(10);
@@ -199,7 +199,7 @@ public class WindowGame extends BasicGame {
     private void creerRectangleTube(Graphics g) {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
-                int temp = map.getTileId(i, j, this.map.getLayerIndex("Bloc"));
+                int temp = map.getTileId(i, j, this.map.getLayerIndex("Tuyaux"));
                 if (temp == (42)|| temp == (43) || temp == (61) || temp == (62)){
                     rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
                     listeRectanglesTube.add(rectangle);
