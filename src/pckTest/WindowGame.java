@@ -199,7 +199,8 @@ public class WindowGame extends BasicGame {
     private void creerRectangleTube(Graphics g) {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
-                if (map.getTileId(i, j, this.map.getLayerIndex("Bloc")) == (42 | 43 | 61 | 62)) {
+                int temp = map.getTileId(i, j, this.map.getLayerIndex("Bloc"));
+                if (temp == (42)|| temp == (43) || temp == (61) || temp == (62)){
                     rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
                     listeRectanglesTube.add(rectangle);
 
