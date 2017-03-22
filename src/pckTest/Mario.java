@@ -309,6 +309,10 @@ public class Mario {
         sprites[3] = new SpriteSheet("sprites/mario_mini_left.gif", 16, 16);
     }
 
+    public void setX(int x) {
+        this.x = x;
+    }
+
     public void gravity() {
         if (!aTerre) {
             setY(y + 1);
