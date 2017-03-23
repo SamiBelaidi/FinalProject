@@ -131,7 +131,7 @@ public class WindowGame extends BasicGame {
 
         this.map.render(map.getRenderX(), map.getRenderY());
         creerRectangleGround(g);
-        creerRectangleSurprise(g);
+        //     creerRectangleSurprise(g);
         drawMarioRect(g);
         creerRectangleTube(g);
         g.drawAnimation(mario.getAnimation(), mario.getX(), mario.getY());
@@ -254,21 +254,39 @@ public class WindowGame extends BasicGame {
         }
     }
 
-    private float calculateIntersects(float xa1, float xa2, float ya1, float ya2, float xb1, float xb2, float yb1, float yb2) {
+    private float calculateIntersectsX(float xa1, float xa2, float ya1, float ya2, float xb1, float xb2, float yb1, float yb2) {
         xOverLap = Math.max(0, Math.min(xa2, xb2) - Math.max(xa1, xb1));
-        yOverLap = Math.max(0, Math.min(ya2, yb2) - Math.max(ya1, yb1));
-        System.out.println(yOverLap);
+
         //if (xa1 > xb1) {
-            if (Math.abs(xOverLap)<Math.abs(yOverLap)) {
-                if(mario.getRectangle().getCenterX()<xb1+8){
-                     mario.setX((int) (mario.getX() - xOverLap));
-                }
-                else mario.setX((int) (mario.getX() + xOverLap));
+        /*  if (Math.abs(xOverLap) < Math.abs(yOverLap)) {
+            if (mario.getRectangle().getCenterX() < xb1 + 8) {
+                mario.setX((int) (mario.getX() - xOverLap));
+            } else {
+                mario.setX((int) (mario.getX() + xOverLap));
             }
+        }
         //} else {
-            
+
+        //}
+        //  yOverLap = Math.max(0, Math.min(ya2, yb2) - Math.max(ya1, yb1));*/
+        return yOverLap;
+    }
+
+    private float calculateIntersectsY(float xa1, float xa2, float ya1, float ya2, float xb1, float xb2, float yb1, float yb2) {
+        yOverLap = Math.max(0, Math.min(ya2, yb2) - Math.max(ya1, yb1));
+
+        /*   if (Math.abs(xOverLap) < Math.abs(yOverLap)) {
+            if (mario.getRectangle().getCenterX() < xb1 + 8) {
+                mario.setX((int) (mario.getX() - xOverLap));
+            } else {
+                mario.setX((int) (mario.getX() + xOverLap));
+            }
+        }
+        //} else {
+
         //}
         //  yOverLap = Math.max(0, Math.min(ya2, yb2) - Math.max(ya1, yb1));
+         */
         return yOverLap;
     }
 
@@ -283,17 +301,33 @@ public class WindowGame extends BasicGame {
                 break;
             }
         }
-        System.out.println(mario.isaTerre());
+
         if (collision1) {
-            float temp = calculateIntersects(mario.getRectangle().getX(), mario.getRectangle().getX() + 16, mario.getRectangle().getY(), mario.getRectangle().getY() + mario.getRectangle().getHeight(), x.getX(), x.getX() + x.getWidth(), x.getY(), x.getY() + x.getHeight());
+            float xOverLap = calculateIntersectsX(mario.getRectangle().getX(), mario.getRectangle().getX() + 16, mario.getRectangle().getY(), mario.getRectangle().getY() + mario.getRectangle().getHeight(), x.getX(), x.getX() + x.getWidth(), x.getY(), x.getY() + x.getHeight());
+            float yOverLap = calculateIntersectsY(mario.getRectangle().getX(), mario.getRectangle().getX() + 16, mario.getRectangle().getY(), mario.getRectangle().getY() + mario.getRectangle().getHeight(), x.getX(), x.getX() + x.getWidth(), x.getY(), x.getY() + x.getHeight());
+            System.out.println(yOverLap);
+            if (yOverLap == 0) {
+                if (mario.getY() > x.getY()) {
+                    mario.setConditionThread(false);
+                } else {
+
+                    mario.setaTerre(true);
+
+                    if (compteur == 0) {
+                        mario.setState(Mario.State.GROUND);
+                    }
+                    compteur++;
+                }
+
+            }
+
             /*   if (mario.getX() < x.getX()) {
                 mario.setMoving(false);
             }
             Felse if (mario.getX() > x.getX() + 14) {
                 mario.setMoving(false);
             }*/
-
-            if (mario.getY() > x.getY()) {
+ /*   if (mario.getY() > x.getY()) {
                 mario.setConditionThread(false);
             } else {
                 if (temp == 0) {
@@ -304,8 +338,7 @@ public class WindowGame extends BasicGame {
                     }
                     compteur++;
                 }
-            }
-
+            }*/
         } else {
             compteur = 0;
             mario.setaTerre(false);

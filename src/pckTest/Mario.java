@@ -131,9 +131,9 @@ public class Mario {
     public void setBig(boolean big) {
         this.big = big;
         if (isBig()) {
-            rectangle = new FakeRectangle(x, y, 16, 32);
+            rectangle = new FakeRectangle(x, y - 2, 16, 32);
         } else {
-            rectangle = new FakeRectangle(x, y, 16, 16);
+            rectangle = new FakeRectangle(x, y - 2, 16, 16);
         }
     }
 
@@ -163,6 +163,7 @@ public class Mario {
 
     public void setConditionThread(boolean conditionThread) {
         this.conditionThread = conditionThread;
+
     }
 
     public void jump() {
@@ -175,7 +176,8 @@ public class Mario {
                     Thread.sleep(10);
                 } catch (InterruptedException ex) {
                 }
-                setY(getY() - 2);
+
+                setY(y - 2);
                 i++;
             }
 
