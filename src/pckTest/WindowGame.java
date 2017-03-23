@@ -21,7 +21,7 @@ import org.newdawn.slick.SlickException;
  */
 public class WindowGame extends BasicGame {
 
-    int h = 0;
+    boolean creerRectangles;
     private float xOverLap, yOverLap;
     private boolean rectVisible;
     private FakeRectangle rectangle;
@@ -69,6 +69,7 @@ public class WindowGame extends BasicGame {
         map = new Map("map\\map.tmx");
         this.mario = new Mario(true, map, this);
         animation = new Animation();
+        fillListeRectangles();
 
     }
 
@@ -129,17 +130,21 @@ public class WindowGame extends BasicGame {
 
     @Override
     public void render(GameContainer container, Graphics g) throws SlickException {
-
+        if (creerRectangles == false) {
+            creerRectangleGround(g);
+            //   creerRectangleSurprise(g);
+            drawMarioRect(g);
+            //creerRectangleTube(g);
+            creerRectangles = true;
+        }
         this.map.render(map.getRenderX(), map.getRenderY());
-        creerRectangleGround(g);
-        //     creerRectangleSurprise(g);
-        drawMarioRect(g);
-        creerRectangleTube(g);
+
         g.drawAnimation(mario.getAnimation(), mario.getX(), mario.getY());
         try {
             Thread.sleep(10);
         } catch (InterruptedException ex) {
         }
+
     }
 
     @Override
@@ -149,6 +154,12 @@ public class WindowGame extends BasicGame {
         mario.updateAnimation();
         mario.gravity();
         gererCollisionGround();
+    }
+
+    private void deleteRectangles() {
+        for (int i = 0; i < listeRectangles.size(); i++) {
+            listeRectangles.get(i).clear();
+        }
     }
 
     private void drawMarioRect(Graphics g) {
@@ -257,57 +268,36 @@ public class WindowGame extends BasicGame {
 
     private float calculateIntersectsX(float xa1, float xa2, float ya1, float ya2, float xb1, float xb2, float yb1, float yb2) {
         xOverLap = Math.max(0, Math.min(xa2, xb2) - Math.max(xa1, xb1));
-
-        //if (xa1 > xb1) {
-        /*  if (Math.abs(xOverLap) < Math.abs(yOverLap)) {
-            if (mario.getRectangle().getCenterX() < xb1 + 8) {
-                mario.setX((int) (mario.getX() - xOverLap));
-            } else {
-                mario.setX((int) (mario.getX() + xOverLap));
-            }
-        }
-        //} else {
-
-        //}
-        //  yOverLap = Math.max(0, Math.min(ya2, yb2) - Math.max(ya1, yb1));*/
         return yOverLap;
     }
 
     private float calculateIntersectsY(float xa1, float xa2, float ya1, float ya2, float xb1, float xb2, float yb1, float yb2) {
         yOverLap = Math.max(0, Math.min(ya2, yb2) - Math.max(ya1, yb1));
 
-        /*   if (Math.abs(xOverLap) < Math.abs(yOverLap)) {
-            if (mario.getRectangle().getCenterX() < xb1 + 8) {
-                mario.setX((int) (mario.getX() - xOverLap));
-            } else {
-                mario.setX((int) (mario.getX() + xOverLap));
-            }
-        }
-        //} else {
-
-        //}
-        //  yOverLap = Math.max(0, Math.min(ya2, yb2) - Math.max(ya1, yb1));
-         */
         return yOverLap;
     }
 
     private void gererCollisionGround() throws SlickException {
         FakeRectangle x = null;
         boolean collision1 = false;
-        for (int i = 0; i < listeRectanglesGround.size(); i++) {
-            x = listeRectanglesGround.get(i);
-            if (mario.getRectangle().getBounds().intersects(x.getX(), x.getY() - 2, x.getWidth(), x.getHeight())) {
-                collision1 = true;
+        for (int i = 0; i < listeRectangles.size(); i++) {
+            for (int j = 0; j < listeRectangles.get(i).size(); j++) {
+                x = listeRectangles.get(i).get(j);
 
-                break;
+                if (mario.getRectangle().getBounds().intersects(x.getX(), x.getY() - 2, x.getWidth(), x.getHeight())) {
+                    collision1 = true;
+                    break;
+                }
             }
         }
 
         if (collision1) {
-
             float xOverLap = calculateIntersectsX(mario.getRectangle().getX(), mario.getRectangle().getX() + 16, mario.getRectangle().getY(), mario.getRectangle().getY() + mario.getRectangle().getHeight(), x.getX(), x.getX() + x.getWidth(), x.getY(), x.getY() + x.getHeight());
             float yOverLap = calculateIntersectsY(mario.getRectangle().getX(), mario.getRectangle().getX() + 16, mario.getRectangle().getY(), mario.getRectangle().getY() + mario.getRectangle().getHeight(), x.getX(), x.getX() + x.getWidth(), x.getY(), x.getY() + x.getHeight());
             if (yOverLap < 6) {
+                if (yOverLap == 1) {
+                    mario.setY(mario.getY() - 1);
+                }
                 if (mario.getRectangle().getY() > x.getY()) {
                     mario.setConditionThread(false);
                 } else if (yOverLap == 0) {
@@ -320,26 +310,6 @@ public class WindowGame extends BasicGame {
 
             } else if (xOverLap < 16) {
                 mario.setMoving(false);
-
-            }
-
-            /*   if (mario.getX() < x.getX()) {
-                mario.setMoving(false);
-            }
-            Felse if (mario.getX() > x.getX() + 14) {
-                mario.setMoving(false);
-            }*/ /*   if (mario.getY() > x.getY()) {
-                mario.setConditionThread(false);
-            } else {
-                if (temp == 0) {
-                    mario.setaTerre(true);
-
-                    if (compteur == 0) {
-                        mario.setState(Mario.State.GROUND);
-                    }
-                    compteur++;
-                }
-            }*/ {
 
             }
         } else {
