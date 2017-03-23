@@ -21,6 +21,7 @@ import org.newdawn.slick.SlickException;
  */
 public class WindowGame extends BasicGame {
 
+    int h = 0;
     private float xOverLap, yOverLap;
     private boolean rectVisible;
     private FakeRectangle rectangle;
@@ -303,21 +304,22 @@ public class WindowGame extends BasicGame {
         }
 
         if (collision1) {
+
             float xOverLap = calculateIntersectsX(mario.getRectangle().getX(), mario.getRectangle().getX() + 16, mario.getRectangle().getY(), mario.getRectangle().getY() + mario.getRectangle().getHeight(), x.getX(), x.getX() + x.getWidth(), x.getY(), x.getY() + x.getHeight());
             float yOverLap = calculateIntersectsY(mario.getRectangle().getX(), mario.getRectangle().getX() + 16, mario.getRectangle().getY(), mario.getRectangle().getY() + mario.getRectangle().getHeight(), x.getX(), x.getX() + x.getWidth(), x.getY(), x.getY() + x.getHeight());
-            System.out.println(yOverLap);
-            if (yOverLap == 0) {
-                if (mario.getY() > x.getY()) {
+            if (yOverLap < 6) {
+                if (mario.getRectangle().getY() > x.getY()) {
                     mario.setConditionThread(false);
-                } else {
-
+                } else if (yOverLap == 0) {
                     mario.setaTerre(true);
-
                     if (compteur == 0) {
                         mario.setState(Mario.State.GROUND);
                     }
                     compteur++;
                 }
+
+            } else if (xOverLap < 16) {
+                mario.setMoving(false);
 
             }
 
@@ -326,8 +328,7 @@ public class WindowGame extends BasicGame {
             }
             Felse if (mario.getX() > x.getX() + 14) {
                 mario.setMoving(false);
-            }*/
- /*   if (mario.getY() > x.getY()) {
+            }*/ /*   if (mario.getY() > x.getY()) {
                 mario.setConditionThread(false);
             } else {
                 if (temp == 0) {
@@ -338,7 +339,9 @@ public class WindowGame extends BasicGame {
                     }
                     compteur++;
                 }
-            }*/
+            }*/ {
+
+            }
         } else {
             compteur = 0;
             mario.setaTerre(false);
