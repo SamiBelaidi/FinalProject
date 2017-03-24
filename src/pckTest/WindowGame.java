@@ -23,7 +23,7 @@ public class WindowGame extends BasicGame {
 
     boolean creerRectangles;
     private float xOverLap, yOverLap;
-    private boolean rectVisible;
+    private boolean rectVisible = true;
     private FakeRectangle rectangle;
     private ArrayList<ArrayList<FakeRectangle>> listeRectangles = new ArrayList();
     private ArrayList<FakeRectangle> listeRectanglesGround = new ArrayList();
@@ -99,8 +99,7 @@ public class WindowGame extends BasicGame {
     }
 
     @Override
-    public void keyPressed(int key, char c
-    ) {
+    public void keyPressed(int key, char c) {
         switch (key) {
             case Input.KEY_LEFT:
                 mario.setGoingRight(false);
@@ -122,10 +121,10 @@ public class WindowGame extends BasicGame {
                 break;
             case Input.KEY_V:
                 rectVisible = !rectVisible;
+                creerRectangles = false;
                 mario.setRectVisible(!mario.isRectVisible());
                 break;
         }
-
     }
 
     @Override
@@ -138,7 +137,6 @@ public class WindowGame extends BasicGame {
             creerRectangles = true;
         }
         this.map.render(map.getRenderX(), map.getRenderY());
-
         g.drawAnimation(mario.getAnimation(), mario.getX(), mario.getY());
         try {
             Thread.sleep(10);
@@ -149,17 +147,10 @@ public class WindowGame extends BasicGame {
 
     @Override
     public void update(GameContainer container, int delta) throws SlickException {
-
         mario.bouger();
         mario.updateAnimation();
         mario.gravity();
         gererCollisionGround();
-    }
-
-    private void deleteRectangles() {
-        for (int i = 0; i < listeRectangles.size(); i++) {
-            listeRectangles.get(i).clear();
-        }
     }
 
     private void drawMarioRect(Graphics g) {
@@ -171,7 +162,7 @@ public class WindowGame extends BasicGame {
         g.draw(mario.getRectangle());
     }
 
-    private void creerRectangleGround(Graphics g) {
+    private void creerRectangleGround(Graphics g) throws SlickException {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
                 if (map.getTileId(i, j, this.map.getLayerIndex("Ground")) == 49) {
@@ -184,7 +175,6 @@ public class WindowGame extends BasicGame {
                         g.setColor(Color.transparent);
                     }
                     g.draw(rectangle);
-
                 }
             }
         }
@@ -307,8 +297,8 @@ public class WindowGame extends BasicGame {
                     }
                     compteur++;
                 }
-
-            } else if (xOverLap < 16) {
+                //  System.out.println(xOverLap);
+            } else if (xOverLap == 0) {
                 mario.setMoving(false);
 
             }
