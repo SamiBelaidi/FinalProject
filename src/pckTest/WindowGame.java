@@ -23,7 +23,7 @@ public class WindowGame extends BasicGame {
 
     boolean creerRectangles;
     private float xOverLap, yOverLap;
-    private boolean rectVisible = true;
+    private boolean rectVisible = false;
     private FakeRectangle rectangle;
     private ArrayList<ArrayList<FakeRectangle>> listeRectangles = new ArrayList();
     private ArrayList<FakeRectangle> listeRectanglesGround = new ArrayList();
@@ -44,7 +44,6 @@ public class WindowGame extends BasicGame {
         super("Maxime Meloche");
         this.height = height;
         this.width = width;
-
     }
 
     private void fillListeRectangles() {
@@ -129,13 +128,7 @@ public class WindowGame extends BasicGame {
 
     @Override
     public void render(GameContainer container, Graphics g) throws SlickException {
-        if (creerRectangles == false) {
-            creerRectangleGround(g);
-            //   creerRectangleSurprise(g);
-            drawMarioRect(g);
-            //creerRectangleTube(g);
-            creerRectangles = true;
-        }
+
         this.map.render(map.getRenderX(), map.getRenderY());
         g.drawAnimation(mario.getAnimation(), mario.getX(), mario.getY());
         try {
@@ -143,6 +136,13 @@ public class WindowGame extends BasicGame {
         } catch (InterruptedException ex) {
         }
 
+        if (creerRectangles == false) {
+            creerRectangleGround(g);
+            creerRectangleSurprise(g);
+            drawMarioRect(g);
+            //creerRectangleTube(g);
+            creerRectangles = true;
+        }
     }
 
     @Override
@@ -270,12 +270,14 @@ public class WindowGame extends BasicGame {
     private void gererCollisionGround() throws SlickException {
         FakeRectangle x = null;
         boolean collision1 = false;
+
         for (int i = 0; i < listeRectangles.size(); i++) {
             for (int j = 0; j < listeRectangles.get(i).size(); j++) {
                 x = listeRectangles.get(i).get(j);
 
                 if (mario.getRectangle().getBounds().intersects(x.getX(), x.getY() - 2, x.getWidth(), x.getHeight())) {
                     collision1 = true;
+                    System.out.println(i);
                     break;
                 }
             }
