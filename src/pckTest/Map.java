@@ -5,6 +5,8 @@
  */
 package pckTest;
 
+import java.util.ArrayList;
+import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 
@@ -15,9 +17,11 @@ import org.newdawn.slick.tiled.TiledMap;
 public class Map extends TiledMap {
 
     private int renderX = 0, renderY = 0;
+    private WindowGame bg;
 
-    public Map(String ref) throws SlickException {
+    public Map(String ref, WindowGame bg) throws SlickException {
         super(ref);
+        this.bg = bg;
     }
 
     public int getRenderX() {
@@ -30,5 +34,10 @@ public class Map extends TiledMap {
 
     public void avancer() {
         renderX -= 1;
+        ArrayList<FakeRectangle> liste = bg.getListeRectangles();
+        for (int i = 0; i < liste.size(); i++) {
+            liste.get(i).setX(liste.get(i).getX() - 1);
+        }
     }
+
 }

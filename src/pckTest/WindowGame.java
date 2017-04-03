@@ -25,7 +25,7 @@ public class WindowGame extends BasicGame {
     private float xOverLap, yOverLap;
     private boolean rectVisible = false;
     private FakeRectangle rectangle;
-    private ArrayList<ArrayList<FakeRectangle>> listeRectangles = new ArrayList();
+    private ArrayList<FakeRectangle> listeRectangles = new ArrayList();
     private ArrayList<FakeRectangle> listeRectanglesGround = new ArrayList();
     private ArrayList<FakeRectangle> listeRectanglesSurprise = new ArrayList();
     private ArrayList<FakeRectangle> listeRectanglesTube = new ArrayList();
@@ -46,14 +46,14 @@ public class WindowGame extends BasicGame {
         this.width = width;
     }
 
-    private void fillListeRectangles() {
+    /* private void fillListeRectangles() {
         listeRectangles.add(listeRectanglesBloc);
         listeRectangles.add(listeRectanglesFlag);
-        listeRectangles.add(listeRectanglesGround);
         listeRectangles.add(listeRectanglesSurprise);
-        listeRectangles.add(listeRectanglesTube);
-    }
+        listeRectangles.add(listeRectanglesGround);
 
+        listeRectangles.add(listeRectanglesTube);
+    }*/
     public int getWidth() {
         return width;
     }
@@ -65,10 +65,10 @@ public class WindowGame extends BasicGame {
     @Override
     public void init(GameContainer container) throws SlickException {
         this.container = container;
-        map = new Map("map\\map.tmx");
+        map = new Map("map\\map.tmx", this);
         this.mario = new Mario(true, map, this);
         animation = new Animation();
-        fillListeRectangles();
+        //fillListeRectangles();
 
     }
 
@@ -131,26 +131,30 @@ public class WindowGame extends BasicGame {
 
         this.map.render(map.getRenderX(), map.getRenderY());
         g.drawAnimation(mario.getAnimation(), mario.getX(), mario.getY());
-        try {
-            Thread.sleep(10);
-        } catch (InterruptedException ex) {
-        }
 
-        if (creerRectangles == false) {
-            creerRectangleGround(g);
+       // if (creerRectangles == false) {
             creerRectangleSurprise(g);
+            creerRectangleGround(g);
             drawMarioRect(g);
-            //creerRectangleTube(g);
-            creerRectangles = true;
-        }
+            creerRectangleTube(g);
+         //   creerRectangles = true;
+       // }
     }
 
     @Override
     public void update(GameContainer container, int delta) throws SlickException {
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) {
+        }
         mario.bouger();
         mario.updateAnimation();
         mario.gravity();
         gererCollisionGround();
+    }
+
+    public ArrayList<FakeRectangle> getListeRectangles() {
+        return listeRectangles;
     }
 
     private void drawMarioRect(Graphics g) {
@@ -166,9 +170,9 @@ public class WindowGame extends BasicGame {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
                 if (map.getTileId(i, j, this.map.getLayerIndex("Ground")) == 49) {
-                    rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
+                    FakeRectangle rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
                     listeRectanglesGround.add(rectangle);
-
+                    listeRectangles.add(rectangle);
                     if (rectVisible) {
                         g.setColor(Color.yellow);
                     } else {
@@ -184,9 +188,9 @@ public class WindowGame extends BasicGame {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
                 if (map.getTileId(i, j, this.map.getLayerIndex("Surprise")) == 253) {
-                    rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
+                    FakeRectangle rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
                     listeRectanglesSurprise.add(rectangle);
-
+                    listeRectangles.add(rectangle);
                     if (rectVisible) {
                         g.setColor(Color.yellow);
                     } else {
@@ -204,9 +208,9 @@ public class WindowGame extends BasicGame {
             for (int j = 0; j < map.getHeight(); j++) {
                 int temp = map.getTileId(i, j, this.map.getLayerIndex("Tuyaux"));
                 if (temp == (42) || temp == (43) || temp == (61) || temp == (62)) {
-                    rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
+                    FakeRectangle rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
                     listeRectanglesTube.add(rectangle);
-
+                    listeRectangles.add(rectangle);
                     if (rectVisible) {
                         g.setColor(Color.yellow);
                     } else {
@@ -223,9 +227,9 @@ public class WindowGame extends BasicGame {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
                 if (map.getTileId(i, j, this.map.getLayerIndex("Bloc")) == 3) {
-                    rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
+                    FakeRectangle rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
                     listeRectanglesBloc.add(rectangle);
-
+                    listeRectangles.add(rectangle);
                     if (rectVisible) {
                         g.setColor(Color.yellow);
                     } else {
@@ -242,7 +246,8 @@ public class WindowGame extends BasicGame {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
                 if (map.getTileId(i, j, this.map.getLayerIndex("Bloc")) == 5) {
-                    rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
+                    FakeRectangle rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
+                    listeRectangles.add(rectangle);
                     listeRectanglesFlag.add(rectangle);
                     if (rectVisible) {
                         g.setColor(Color.yellow);
@@ -263,7 +268,6 @@ public class WindowGame extends BasicGame {
 
     private float calculateIntersectsY(float xa1, float xa2, float ya1, float ya2, float xb1, float xb2, float yb1, float yb2) {
         yOverLap = Math.max(0, Math.min(ya2, yb2) - Math.max(ya1, yb1));
-
         return yOverLap;
     }
 
@@ -272,14 +276,11 @@ public class WindowGame extends BasicGame {
         boolean collision1 = false;
 
         for (int i = 0; i < listeRectangles.size(); i++) {
-            for (int j = 0; j < listeRectangles.get(i).size(); j++) {
-                x = listeRectangles.get(i).get(j);
+            x = listeRectangles.get(i);
 
-                if (mario.getRectangle().getBounds().intersects(x.getX(), x.getY() - 2, x.getWidth(), x.getHeight())) {
-                    collision1 = true;
-                    System.out.println(i);
-                    break;
-                }
+            if (mario.getRectangle().getBounds().intersects(x.getX(), x.getY() - 2, x.getWidth(), x.getHeight())) {
+                collision1 = true;
+                break;
             }
         }
 
@@ -299,7 +300,6 @@ public class WindowGame extends BasicGame {
                     }
                     compteur++;
                 }
-                //  System.out.println(xOverLap);
             } else if (xOverLap == 0) {
                 mario.setMoving(false);
 
