@@ -132,13 +132,13 @@ public class WindowGame extends BasicGame {
         this.map.render(map.getRenderX(), map.getRenderY());
         g.drawAnimation(mario.getAnimation(), mario.getX(), mario.getY());
 
-       // if (creerRectangles == false) {
-            creerRectangleSurprise(g);
-            creerRectangleGround(g);
-            drawMarioRect(g);
-            creerRectangleTube(g);
-         //   creerRectangles = true;
-       // }
+        // if (creerRectangles == false) {
+        creerRectangleSurprise(g);
+        creerRectangleGround(g);
+        drawMarioRect(g);
+        creerRectangleTube(g);
+        //   creerRectangles = true;
+        // }
     }
 
     @Override
@@ -272,6 +272,58 @@ public class WindowGame extends BasicGame {
     }
 
     private void gererCollisionGround() throws SlickException {
+        /*     float yTile, xTile;
+        int x1 = (int) (mario.getX()) / this.map.getTileWidth();
+        int y1 = (int) (mario.getY() + 16) / this.map.getTileHeight();
+        Image tile1 = this.map.getTileImage(x1, y1, this.map.getLayerIndex("Ground"));
+        boolean collision1 = tile1 != null;
+
+        int x2 = (int) (mario.getX() + 16) / this.map.getTileWidth();
+        int y2 = (int) (mario.getY() + 16) / this.map.getTileHeight();
+        Image tile2 = this.map.getTileImage(x2, y2, this.map.getLayerIndex("Ground"));
+        boolean collision2 = tile2 != null;
+
+        int x3 = (int) (mario.getX()) / this.map.getTileWidth();
+        int y3 = (int) (mario.getY() + 16) / this.map.getTileHeight();
+        Image tile3 = this.map.getTileImage(x3, y3, this.map.getLayerIndex("Ground"));
+        boolean collision3 = tile3 != null;
+
+        int x4 = (int) (mario.getX()) / this.map.getTileWidth();
+        int y4 = (int) (mario.getY()) / this.map.getTileHeight();
+        Image tile4 = this.map.getTileImage(x4, y4, this.map.getLayerIndex("Ground"));
+        boolean collision4 = tile4 != null;
+
+        if (collision1 || collision2 || collision3 || collision4) {
+
+            if (collision1) {
+                yTile = y1 * 16;
+                xTile = x1 * 16;
+            } else if (collision2) {
+                yTile = y2 * 16;
+                xTile = x2 * 16;
+            } else if (collision3) {
+                yTile = y3 * 16;
+                xTile = x3 * 16;
+            } else {
+                yTile = y4 * 16;
+                xTile = x4 * 16;
+            }
+            if (mario.getY() >= (int) yTile) {
+                mario.setaTerre(true);
+                if (compteur == 0) {
+                    mario.setState(Mario.State.GROUND);
+                }
+                compteur++;
+            } else if (mario.getY() < (int) yTile) {
+                mario.setConditionThread(false);
+            }
+
+        } else {
+            compteur = 0;
+            mario.setaTerre(false);
+        }
+    }*/
+
         FakeRectangle x = null;
         boolean collision1 = false;
 

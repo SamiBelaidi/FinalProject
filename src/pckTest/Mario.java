@@ -209,7 +209,8 @@ public class Mario {
                 if (x < (window.getWidth() / 3)) {
                     vitesseX = 1;
                 } else {
-                    map.avancer();
+                    //   map.avancer();
+                    vitesseX = 1;
                 }
             } else {
                 vitesseX = -1;

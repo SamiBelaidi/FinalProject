@@ -34,10 +34,6 @@ public class Map extends TiledMap {
 
     public void avancer() {
         renderX -= 1;
-        ArrayList<FakeRectangle> liste = bg.getListeRectangles();
-        for (int i = 0; i < liste.size(); i++) {
-            liste.get(i).setX(liste.get(i).getX() - 1);
-        }
     }
 
 }
