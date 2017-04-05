@@ -21,7 +21,7 @@ import org.newdawn.slick.SlickException;
  */
 public class WindowGame extends BasicGame {
 
-    boolean creerRectangles;
+    private int timer = 0;
     private float xOverLap, yOverLap;
     private boolean rectVisible = false;
     private FakeRectangle rectangle;
@@ -68,8 +68,13 @@ public class WindowGame extends BasicGame {
         map = new Map("map\\map.tmx", this);
         this.mario = new Mario(true, map, this);
         animation = new Animation();
-        //fillListeRectangles();
 
+    }
+
+    public void creerRectangle() throws SlickException {
+        creerRectangleSurprise();
+        creerRectangleGround();
+        creerRectangleTube();
     }
 
     @Override
@@ -120,34 +125,33 @@ public class WindowGame extends BasicGame {
                 break;
             case Input.KEY_V:
                 rectVisible = !rectVisible;
-                creerRectangles = false;
                 mario.setRectVisible(!mario.isRectVisible());
                 break;
         }
     }
 
+    public int getTimer() {
+        return timer;
+    }
+
     @Override
     public void render(GameContainer container, Graphics g) throws SlickException {
-
+        timer++;
         this.map.render(map.getRenderX(), map.getRenderY());
         g.drawAnimation(mario.getAnimation(), mario.getX(), mario.getY());
-
-        // if (creerRectangles == false) {
-        creerRectangleSurprise(g);
-        creerRectangleGround(g);
-        drawMarioRect(g);
-        creerRectangleTube(g);
-        //   creerRectangles = true;
-        // }
+        mario.bouger(g);
+        afficherRectangles(g);
     }
 
     @Override
     public void update(GameContainer container, int delta) throws SlickException {
+        System.out.println("delta " + delta);
+        System.out.println("timer " + timer);
         try {
             Thread.sleep(10);
         } catch (InterruptedException e) {
         }
-        mario.bouger();
+
         mario.updateAnimation();
         mario.gravity();
         gererCollisionGround();
@@ -157,53 +161,39 @@ public class WindowGame extends BasicGame {
         return listeRectangles;
     }
 
-    private void drawMarioRect(Graphics g) {
-        if (mario.isRectVisible()) {
-            g.setColor(Color.yellow);
-        } else {
-            g.setColor(Color.transparent);
+    private void afficherRectangles(Graphics g) {
+        if (rectVisible) {
+            for (int i = 0; i < listeRectangles.size(); i++) {
+                g.draw(listeRectangles.get(i));
+            }
         }
-        g.draw(mario.getRectangle());
     }
 
-    private void creerRectangleGround(Graphics g) throws SlickException {
+    private void creerRectangleGround() throws SlickException {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
                 if (map.getTileId(i, j, this.map.getLayerIndex("Ground")) == 49) {
                     FakeRectangle rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
                     listeRectanglesGround.add(rectangle);
                     listeRectangles.add(rectangle);
-                    if (rectVisible) {
-                        g.setColor(Color.yellow);
-                    } else {
-                        g.setColor(Color.transparent);
-                    }
-                    g.draw(rectangle);
                 }
             }
         }
     }
 
-    private void creerRectangleSurprise(Graphics g) {
+    private void creerRectangleSurprise() {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
                 if (map.getTileId(i, j, this.map.getLayerIndex("Surprise")) == 253) {
                     FakeRectangle rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
                     listeRectanglesSurprise.add(rectangle);
                     listeRectangles.add(rectangle);
-                    if (rectVisible) {
-                        g.setColor(Color.yellow);
-                    } else {
-                        g.setColor(Color.transparent);
-                    }
-                    g.draw(rectangle);
-
                 }
             }
         }
     }
 
-    private void creerRectangleTube(Graphics g) {
+    private void creerRectangleTube() {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
                 int temp = map.getTileId(i, j, this.map.getLayerIndex("Tuyaux"));
@@ -211,51 +201,30 @@ public class WindowGame extends BasicGame {
                     FakeRectangle rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
                     listeRectanglesTube.add(rectangle);
                     listeRectangles.add(rectangle);
-                    if (rectVisible) {
-                        g.setColor(Color.yellow);
-                    } else {
-                        g.setColor(Color.transparent);
-                    }
-                    g.draw(rectangle);
-
                 }
             }
         }
     }
 
-    private void creerRectangleBloc(Graphics g) {
+    private void creerRectangleBloc() {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
                 if (map.getTileId(i, j, this.map.getLayerIndex("Bloc")) == 3) {
                     FakeRectangle rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
                     listeRectanglesBloc.add(rectangle);
                     listeRectangles.add(rectangle);
-                    if (rectVisible) {
-                        g.setColor(Color.yellow);
-                    } else {
-                        g.setColor(Color.transparent);
-                    }
-                    g.draw(rectangle);
-
                 }
             }
         }
     }
 
-    private void creerRectangleFlag(Graphics g) {
+    private void creerRectangleFlag() {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
                 if (map.getTileId(i, j, this.map.getLayerIndex("Bloc")) == 5) {
                     FakeRectangle rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
                     listeRectangles.add(rectangle);
                     listeRectanglesFlag.add(rectangle);
-                    if (rectVisible) {
-                        g.setColor(Color.yellow);
-                    } else {
-                        g.setColor(Color.transparent);
-                    }
-                    g.draw(rectangle);
-
                 }
             }
         }
