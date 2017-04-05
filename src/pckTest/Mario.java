@@ -5,9 +5,8 @@
  */
 package pckTest;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
@@ -201,7 +200,7 @@ public class Mario {
         this.vitesseY = vitesseY;
     }
 
-    public void bouger() {
+    public void bouger(Graphics g) {
         rectangle.setX(x);
         rectangle.setY(y);
         if (isMoving()) {
@@ -209,8 +208,7 @@ public class Mario {
                 if (x < (window.getWidth() / 3)) {
                     vitesseX = 1;
                 } else {
-                    //   map.avancer();
-                    vitesseX = 1;
+                    map.avancer();
                 }
             } else {
                 vitesseX = -1;
