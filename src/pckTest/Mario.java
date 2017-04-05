@@ -208,11 +208,14 @@ public class Mario {
                 if (x < (window.getWidth() / 3)) {
                     vitesseX = 1;
                 } else {
+                    vitesseX = 0;
                     map.avancer();
+                    for (int i = 0; i < window.getListeRectangles().size(); i++) {
+                        window.getListeRectangles().get(i).setX(window.getListeRectangles().get(i).getX() - 1);
+                    }
                 }
             } else {
                 vitesseX = -1;
-
             }
             x = x + vitesseX;
         }
