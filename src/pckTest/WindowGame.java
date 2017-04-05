@@ -196,6 +196,7 @@ public class WindowGame extends BasicGameState {
             for (int i = 0; i < listeRectangles.size(); i++) {
                 g.draw(listeRectangles.get(i));
             }
+           g.draw(mario.getRectangle());
         }
     }
 

@@ -21,7 +21,6 @@ public class Test extends StateBasedGame {
     public static int windowGame = 2;
 
     public static void main(String[] args) throws SlickException {
-
         AppGameContainer app;
         try {
             app = new AppGameContainer(new Test(gameName));
@@ -30,7 +29,6 @@ public class Test extends StateBasedGame {
         } catch (SlickException e) {
             e.printStackTrace();
         }
-
     }
 
     public Test(String gameName) throws SlickException {
@@ -39,7 +37,6 @@ public class Test extends StateBasedGame {
     }
 
     public void initStatesList(GameContainer gc) throws SlickException {
-
         this.addState(new Menu(startMenu));
         this.addState(new WindowGame(250, 640, windowGame));
         this.enterState(startMenu);

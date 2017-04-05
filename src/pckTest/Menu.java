@@ -35,7 +35,7 @@ public class Menu extends BasicGameState {
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 
         background.draw(0, 0, gc.getWidth(), gc.getHeight());
-        
+
     }
 
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
@@ -46,24 +46,23 @@ public class Menu extends BasicGameState {
         System.out.println("X:" + posX + "Y:" + posY);
 
         if ((posX > 175 && posX < 350) && (posY > 257 && posY < 272)) {
-            if (Mouse.isButtonDown(0)){
+            if (Mouse.isButtonDown(0)) {
                 sbg.enterState(2);
-                
-                
-            }
-         
-        }
-        
-        if ((posX > 175 && posX < 350) && (posY > 209 && posY < 224)) {
-            if (Mouse.isButtonDown(0)){
-                
+
             }
 
         }
-        
+
+        if ((posX > 175 && posX < 350) && (posY > 209 && posY < 224)) {
+            if (Mouse.isButtonDown(0)) {
+
+            }
+
+        }
+
         if ((posX > 238 && posX < 270) && (posY > 161 && posY < 176)) {
-            if (Mouse.isButtonDown(0)){
-                
+            if (Mouse.isButtonDown(0)) {
+
             }
 
         }
