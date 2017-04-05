@@ -16,28 +16,25 @@ import org.newdawn.slick.state.StateBasedGame;
  *
  * @author Alex
  */
-public class Menu extends BasicGameState{
-    
+public class Menu extends BasicGameState {
+
     Image background;
     Image onePlayer;
     Image twoPlayers;
-    
-    public Menu (int State){
-        
- 
+
+    public Menu(int State) {
+
     }
 
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-        
         background = new Image("super-mario-bros-menu.png");
-        
     }
 
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-        
-        background.draw(100,100);
+
+        background.draw(100, 100);
     }
 
     @Override
@@ -48,5 +45,5 @@ public class Menu extends BasicGameState{
     public int getID() {
         return 0;
     }
-    
+
 }
