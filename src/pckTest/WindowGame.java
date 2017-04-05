@@ -26,7 +26,6 @@ public class WindowGame extends BasicGameState {
 
     static int ID = 2;
 
-    boolean creerRectangles;
     private float xOverLap, yOverLap;
     private boolean rectVisible = false;
     private FakeRectangle rectangle;
@@ -116,7 +115,6 @@ public class WindowGame extends BasicGameState {
                 break;
             case Input.KEY_V:
                 rectVisible = !rectVisible;
-                creerRectangles = false;
                 mario.setRectVisible(!mario.isRectVisible());
                 break;
         }
@@ -126,53 +124,31 @@ public class WindowGame extends BasicGameState {
         return listeRectangles;
     }
 
-    private void drawMarioRect(Graphics g) {
-        if (mario.isRectVisible()) {
-            g.setColor(Color.yellow);
-        } else {
-            g.setColor(Color.transparent);
-        }
-        g.draw(mario.getRectangle());
-    }
-
-    private void creerRectangleGround(Graphics g) throws SlickException {
+    private void creerRectangleGround() throws SlickException {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
                 if (map.getTileId(i, j, this.map.getLayerIndex("Ground")) == 49) {
                     FakeRectangle rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
                     listeRectanglesGround.add(rectangle);
                     listeRectangles.add(rectangle);
-                    if (rectVisible) {
-                        g.setColor(Color.yellow);
-                    } else {
-                        g.setColor(Color.transparent);
-                    }
-                    g.draw(rectangle);
                 }
             }
         }
     }
 
-    private void creerRectangleSurprise(Graphics g) {
+    private void creerRectangleSurprise() {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
                 if (map.getTileId(i, j, this.map.getLayerIndex("Surprise")) == 253) {
                     FakeRectangle rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
                     listeRectanglesSurprise.add(rectangle);
                     listeRectangles.add(rectangle);
-                    if (rectVisible) {
-                        g.setColor(Color.yellow);
-                    } else {
-                        g.setColor(Color.transparent);
-                    }
-                    g.draw(rectangle);
-
                 }
             }
         }
     }
 
-    private void creerRectangleTube(Graphics g) {
+    private void creerRectangleTube() {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
                 int temp = map.getTileId(i, j, this.map.getLayerIndex("Tuyaux"));
@@ -180,52 +156,45 @@ public class WindowGame extends BasicGameState {
                     FakeRectangle rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
                     listeRectanglesTube.add(rectangle);
                     listeRectangles.add(rectangle);
-                    if (rectVisible) {
-                        g.setColor(Color.yellow);
-                    } else {
-                        g.setColor(Color.transparent);
-                    }
-                    g.draw(rectangle);
-
                 }
             }
         }
     }
 
-    private void creerRectangleBloc(Graphics g) {
+    private void creerRectangleBloc() {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
                 if (map.getTileId(i, j, this.map.getLayerIndex("Bloc")) == 3) {
                     FakeRectangle rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
                     listeRectanglesBloc.add(rectangle);
                     listeRectangles.add(rectangle);
-                    if (rectVisible) {
-                        g.setColor(Color.yellow);
-                    } else {
-                        g.setColor(Color.transparent);
-                    }
-                    g.draw(rectangle);
-
                 }
             }
         }
     }
 
-    private void creerRectangleFlag(Graphics g) {
+    private void creerRectangleFlag() {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
                 if (map.getTileId(i, j, this.map.getLayerIndex("Bloc")) == 5) {
                     FakeRectangle rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
                     listeRectangles.add(rectangle);
                     listeRectanglesFlag.add(rectangle);
-                    if (rectVisible) {
-                        g.setColor(Color.yellow);
-                    } else {
-                        g.setColor(Color.transparent);
-                    }
-                    g.draw(rectangle);
-
                 }
+            }
+        }
+    }
+
+    private void creerRectangle() throws SlickException {
+        creerRectangleSurprise();
+        creerRectangleGround();
+        creerRectangleTube();
+    }
+
+    private void dessinerRectangles(Graphics g) {
+        if (rectVisible) {
+            for (int i = 0; i < listeRectangles.size(); i++) {
+                g.draw(listeRectangles.get(i));
             }
         }
     }
@@ -341,22 +310,14 @@ public class WindowGame extends BasicGameState {
         map = new Map("map\\map.tmx", this);
         this.mario = new Mario(true, map, this);
         animation = new Animation();
-        //fillListeRectangles();
+        creerRectangle();
     }
 
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
         this.map.render(map.getRenderX(), map.getRenderY());
         g.drawAnimation(mario.getAnimation(), mario.getX(), mario.getY());
-
-        if (creerRectangles == false) {
-            creerRectangleSurprise(g);
-            creerRectangleGround(g);
-            drawMarioRect(g);
-            creerRectangleTube(g);
-            creerRectangles = true;
-
-        }
+        dessinerRectangles(g);
         mario.bouger(g);
     }
 
