@@ -5,6 +5,7 @@
  */
 package pckTest;
 
+import static java.lang.System.gc;
 import java.util.ArrayList;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.BasicGame;
@@ -14,14 +15,18 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.BasicGameState;
+import org.newdawn.slick.state.StateBasedGame;
 
 /**
  *
  * @author Sami
  */
-public class WindowGame extends BasicGame {
+public class WindowGame extends BasicGameState {
 
-    private int timer = 0;
+    static int ID = 2;
+
+    boolean creerRectangles;
     private float xOverLap, yOverLap;
     private boolean rectVisible = false;
     private FakeRectangle rectangle;
@@ -38,10 +43,11 @@ public class WindowGame extends BasicGame {
     private Map map;
     private Animation animation;
     private Mario mario;
-    private int height, width;
+    private Menu startMenu;
+    private static int height, width;
 
-    public WindowGame(int height, int width) throws SlickException {
-        super("Maxime Meloche");
+    public WindowGame(int height, int width, int windowGame) throws SlickException {
+
         this.height = height;
         this.width = width;
     }
@@ -60,21 +66,6 @@ public class WindowGame extends BasicGame {
 
     public int getHeight() {
         return height;
-    }
-
-    @Override
-    public void init(GameContainer container) throws SlickException {
-        this.container = container;
-        map = new Map("map\\map.tmx", this);
-        this.mario = new Mario(true, map, this);
-        animation = new Animation();
-
-    }
-
-    public void creerRectangle() throws SlickException {
-        creerRectangleSurprise();
-        creerRectangleGround();
-        creerRectangleTube();
     }
 
     @Override
@@ -125,75 +116,63 @@ public class WindowGame extends BasicGame {
                 break;
             case Input.KEY_V:
                 rectVisible = !rectVisible;
+                creerRectangles = false;
                 mario.setRectVisible(!mario.isRectVisible());
                 break;
         }
-    }
-
-    public int getTimer() {
-        return timer;
-    }
-
-    @Override
-    public void render(GameContainer container, Graphics g) throws SlickException {
-        timer++;
-        this.map.render(map.getRenderX(), map.getRenderY());
-        g.drawAnimation(mario.getAnimation(), mario.getX(), mario.getY());
-        mario.bouger(g);
-        afficherRectangles(g);
-    }
-
-    @Override
-    public void update(GameContainer container, int delta) throws SlickException {
-        System.out.println("delta " + delta);
-        System.out.println("timer " + timer);
-        try {
-            Thread.sleep(10);
-        } catch (InterruptedException e) {
-        }
-
-        mario.updateAnimation();
-        mario.gravity();
-        gererCollisionGround();
     }
 
     public ArrayList<FakeRectangle> getListeRectangles() {
         return listeRectangles;
     }
 
-    private void afficherRectangles(Graphics g) {
-        if (rectVisible) {
-            for (int i = 0; i < listeRectangles.size(); i++) {
-                g.draw(listeRectangles.get(i));
-            }
+    private void drawMarioRect(Graphics g) {
+        if (mario.isRectVisible()) {
+            g.setColor(Color.yellow);
+        } else {
+            g.setColor(Color.transparent);
         }
+        g.draw(mario.getRectangle());
     }
 
-    private void creerRectangleGround() throws SlickException {
+    private void creerRectangleGround(Graphics g) throws SlickException {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
                 if (map.getTileId(i, j, this.map.getLayerIndex("Ground")) == 49) {
                     FakeRectangle rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
                     listeRectanglesGround.add(rectangle);
                     listeRectangles.add(rectangle);
+                    if (rectVisible) {
+                        g.setColor(Color.yellow);
+                    } else {
+                        g.setColor(Color.transparent);
+                    }
+                    g.draw(rectangle);
                 }
             }
         }
     }
 
-    private void creerRectangleSurprise() {
+    private void creerRectangleSurprise(Graphics g) {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
                 if (map.getTileId(i, j, this.map.getLayerIndex("Surprise")) == 253) {
                     FakeRectangle rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
                     listeRectanglesSurprise.add(rectangle);
                     listeRectangles.add(rectangle);
+                    if (rectVisible) {
+                        g.setColor(Color.yellow);
+                    } else {
+                        g.setColor(Color.transparent);
+                    }
+                    g.draw(rectangle);
+
                 }
             }
         }
     }
 
-    private void creerRectangleTube() {
+    private void creerRectangleTube(Graphics g) {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
                 int temp = map.getTileId(i, j, this.map.getLayerIndex("Tuyaux"));
@@ -201,30 +180,51 @@ public class WindowGame extends BasicGame {
                     FakeRectangle rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
                     listeRectanglesTube.add(rectangle);
                     listeRectangles.add(rectangle);
+                    if (rectVisible) {
+                        g.setColor(Color.yellow);
+                    } else {
+                        g.setColor(Color.transparent);
+                    }
+                    g.draw(rectangle);
+
                 }
             }
         }
     }
 
-    private void creerRectangleBloc() {
+    private void creerRectangleBloc(Graphics g) {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
                 if (map.getTileId(i, j, this.map.getLayerIndex("Bloc")) == 3) {
                     FakeRectangle rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
                     listeRectanglesBloc.add(rectangle);
                     listeRectangles.add(rectangle);
+                    if (rectVisible) {
+                        g.setColor(Color.yellow);
+                    } else {
+                        g.setColor(Color.transparent);
+                    }
+                    g.draw(rectangle);
+
                 }
             }
         }
     }
 
-    private void creerRectangleFlag() {
+    private void creerRectangleFlag(Graphics g) {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
                 if (map.getTileId(i, j, this.map.getLayerIndex("Bloc")) == 5) {
                     FakeRectangle rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
                     listeRectangles.add(rectangle);
                     listeRectanglesFlag.add(rectangle);
+                    if (rectVisible) {
+                        g.setColor(Color.yellow);
+                    } else {
+                        g.setColor(Color.transparent);
+                    }
+                    g.draw(rectangle);
+
                 }
             }
         }
@@ -329,5 +329,46 @@ public class WindowGame extends BasicGame {
             compteur = 0;
             mario.setaTerre(false);
         }
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    @Override
+    public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
+        this.container = container;
+        map = new Map("map\\map.tmx", this);
+        this.mario = new Mario(true, map, this);
+        animation = new Animation();
+        //fillListeRectangles();
+    }
+
+    @Override
+    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+        this.map.render(map.getRenderX(), map.getRenderY());
+        g.drawAnimation(mario.getAnimation(), mario.getX(), mario.getY());
+
+        if (creerRectangles == false) {
+            creerRectangleSurprise(g);
+            creerRectangleGround(g);
+            drawMarioRect(g);
+            creerRectangleTube(g);
+            creerRectangles = true;
+
+        }
+        mario.bouger(g);
+    }
+
+    @Override
+    public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) {
+        }
+
+        mario.updateAnimation();
+        mario.gravity();
+        gererCollisionGround();
     }
 }

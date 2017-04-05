@@ -6,6 +6,7 @@
 package pckTest;
 
 import org.newdawn.slick.AppGameContainer;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -13,17 +14,36 @@ import org.newdawn.slick.state.StateBasedGame;
  *
  * @author 1553450
  */
-public class Test {
+public class Test extends StateBasedGame {
 
-    /**
-     * @param args the command line arguments
-     */
+    public static String gameName = "Smart Mario";
+    public static int startMenu = 0;
+    public static int windowGame = 2;
+
     public static void main(String[] args) throws SlickException {
-        // TODO code application logic here
-        int heigth = 250, width = 640;
 
-        AppGameContainer app = new AppGameContainer(new WindowGame(heigth, width), width, heigth, false);
-        app.start();
+        AppGameContainer app;
+        try {
+            app = new AppGameContainer(new Test(gameName));
+            app.setDisplayMode(512, 512, false);
+            app.start();
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public Test(String gameName) throws SlickException {
+        super(gameName);
+
+    }
+
+    public void initStatesList(GameContainer gc) throws SlickException {
+
+        this.addState(new Menu(startMenu));
+        this.addState(new WindowGame(250, 640, windowGame));
+        this.enterState(startMenu);
+
     }
 
 }

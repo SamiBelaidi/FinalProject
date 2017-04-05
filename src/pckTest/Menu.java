@@ -5,6 +5,7 @@
  */
 package pckTest;
 
+import org.lwjgl.input.Mouse;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -18,30 +19,60 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 public class Menu extends BasicGameState {
 
-    Image background;
-    Image onePlayer;
-    Image twoPlayers;
+    private Image background;
+    public static final int ID = 1;
+    private StateBasedGame game;
 
-    public Menu(int State) {
+    public Menu(int startMenu) {
 
     }
 
-    @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-        background = new Image("super-mario-bros-menu.png");
+        this.game = game;
+        this.background = new Image("backgroundMario.png");
     }
 
-    @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 
-        background.draw(100, 100);
+        background.draw(0, 0, gc.getWidth(), gc.getHeight());
+        
     }
 
-    @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
+
+        int posX = Mouse.getX();
+        int posY = Mouse.getY();
+
+        System.out.println("X:" + posX + "Y:" + posY);
+
+        if ((posX > 175 && posX < 350) && (posY > 257 && posY < 272)) {
+            if (Mouse.isButtonDown(0)){
+                sbg.enterState(2);
+                
+                
+            }
+         
+        }
+        
+        if ((posX > 175 && posX < 350) && (posY > 209 && posY < 224)) {
+            if (Mouse.isButtonDown(0)){
+                
+            }
+
+        }
+        
+        if ((posX > 238 && posX < 270) && (posY > 161 && posY < 176)) {
+            if (Mouse.isButtonDown(0)){
+                
+            }
+
+        }
     }
 
-    @Override
+    public void keyReleased(int key, char c) {
+        game.enterState(WindowGame.ID);
+    }
+
     public int getID() {
         return 0;
     }
