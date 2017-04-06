@@ -217,7 +217,9 @@ public class Mario {
             } else {
                 vitesseX = -1;
             }
-            x = x + vitesseX;
+            if ((x + vitesseX) > 0) {
+                x = x + vitesseX;
+            }
         }
     }
 

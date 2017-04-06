@@ -5,8 +5,12 @@
  */
 package pckTest;
 
+import com.sun.java.accessibility.util.AWTEventMonitor;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import static java.lang.System.gc;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.Color;
@@ -17,6 +21,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import sun.awt.WindowClosingListener;
 
 /**
  *
@@ -196,7 +201,7 @@ public class WindowGame extends BasicGameState {
             for (int i = 0; i < listeRectangles.size(); i++) {
                 g.draw(listeRectangles.get(i));
             }
-           g.draw(mario.getRectangle());
+            g.draw(mario.getRectangle());
         }
     }
 
@@ -305,12 +310,23 @@ public class WindowGame extends BasicGameState {
         return ID;
     }
 
+    public void maxime() {
+        AWTEventMonitor.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e); //To change body of generated methods, choose Tools | Templates.
+                JOptionPane.showMessageDialog(null, "salut max");
+            }
+
+        });
+
+    }
+
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         this.container = container;
         map = new Map("map\\map.tmx", this);
         this.mario = new Mario(true, map, this);
-        animation = new Animation();
         creerRectangle();
     }
 

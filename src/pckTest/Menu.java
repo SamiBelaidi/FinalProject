@@ -6,6 +6,7 @@
 package pckTest;
 
 import org.lwjgl.input.Mouse;
+import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -22,9 +23,10 @@ public class Menu extends BasicGameState {
     private Image background;
     public static final int ID = 1;
     private StateBasedGame game;
+    private AppGameContainer app;
 
-    public Menu(int startMenu) {
-
+    public Menu(int startMenu, AppGameContainer app) {
+        this.app = app;
     }
 
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
@@ -39,7 +41,6 @@ public class Menu extends BasicGameState {
     }
 
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
-
         int posX = Mouse.getX();
         int posY = Mouse.getY();
 
@@ -48,23 +49,20 @@ public class Menu extends BasicGameState {
         if ((posX > 175 && posX < 350) && (posY > 257 && posY < 272)) {
             if (Mouse.isButtonDown(0)) {
                 sbg.enterState(2);
-
+                app.setDisplayMode(640, 250, false);
             }
-
         }
 
         if ((posX > 175 && posX < 350) && (posY > 209 && posY < 224)) {
             if (Mouse.isButtonDown(0)) {
 
             }
-
         }
 
         if ((posX > 238 && posX < 270) && (posY > 161 && posY < 176)) {
             if (Mouse.isButtonDown(0)) {
 
             }
-
         }
     }
 
