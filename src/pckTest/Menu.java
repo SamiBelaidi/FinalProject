@@ -44,8 +44,6 @@ public class Menu extends BasicGameState {
         int posX = Mouse.getX();
         int posY = Mouse.getY();
 
-        System.out.println("X:" + posX + "Y:" + posY);
-
         if ((posX > 175 && posX < 350) && (posY > 257 && posY < 272)) {
             if (Mouse.isButtonDown(0)) {
                 sbg.enterState(2);
