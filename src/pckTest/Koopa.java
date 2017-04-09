@@ -13,7 +13,7 @@ import org.newdawn.slick.SpriteSheet;
  *
  * @author Sami
  */
-public class Koopa {
+public class Koopa implements Bougeable {
 
     /*
     animation 0 > marche droite
@@ -37,23 +37,43 @@ public class Koopa {
 
     private void fillAnimations() {
         Animation animation = new Animation();
-        animation.addFrame(spriteSheetRight.getSubImage(0, 5), 100);
-        animation.addFrame(spriteSheetRight.getSubImage(0, 4), 100);
-        animation.addFrame(spriteSheetRight.getSubImage(0, 3), 100);
-        animation.addFrame(spriteSheetRight.getSubImage(0, 2), 100);
+        animation.addFrame(spriteSheetRight.getSubImage(5, 0), 100);
+        animation.addFrame(spriteSheetRight.getSubImage(4, 0), 100);
+        animation.addFrame(spriteSheetRight.getSubImage(3, 0), 100);
+        animation.addFrame(spriteSheetRight.getSubImage(2, 0), 100);
         animations[0] = animation;
         Animation animation2 = new Animation();
         animation.addFrame(spriteSheetLeft.getSubImage(0, 0), 100);
-        animation.addFrame(spriteSheetLeft.getSubImage(0, 1), 100);
-        animation.addFrame(spriteSheetLeft.getSubImage(0, 2), 100);
-        animation.addFrame(spriteSheetLeft.getSubImage(0, 3), 100);
+        animation.addFrame(spriteSheetLeft.getSubImage(1, 0), 100);
+        animation.addFrame(spriteSheetLeft.getSubImage(2, 0), 100);
+        animation.addFrame(spriteSheetLeft.getSubImage(3, 0), 100);
         animations[1] = animation2;
         Animation animation3 = new Animation();
         animation3.addFrame(spriteSheetRight.getSubImage(0, 0), 100);
         animations[2] = animation3;
         Animation animation4 = new Animation();
         animation4.addFrame(spriteSheetRight.getSubImage(0, 0), 100);
-        animation4.addFrame(spriteSheetRight.getSubImage(0, 1), 100);
+        animation4.addFrame(spriteSheetRight.getSubImage(1, 0), 100);
         animations[3] = animation4;
+    }
+
+    @Override
+    public void bouger() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Animation getAnimation() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getX() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getY() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

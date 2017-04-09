@@ -200,9 +200,11 @@ public class Mario {
         this.vitesseY = vitesseY;
     }
 
+    public boolean isConditionThread() {
+        return conditionThread;
+    }
+
     public void bouger(Graphics g) {
-        rectangle.setX(x);
-        rectangle.setY(y);
         if (isMoving()) {
             if (isGoingRight()) {
                 if (x < (window.getWidth() / 3)) {
@@ -221,6 +223,8 @@ public class Mario {
                 x = x + vitesseX;
             }
         }
+        rectangle.setX(x);
+        rectangle.setY(y);
     }
 
     public int getVitesseY() {
