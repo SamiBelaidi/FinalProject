@@ -17,4 +17,5 @@ public interface Bougeable {
     public Animation getAnimation();
     public int getX();
     public int getY();
+    public FakeRectangle getRectangle();
 }

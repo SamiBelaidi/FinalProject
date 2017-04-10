@@ -234,9 +234,14 @@ public class WindowGame extends BasicGameState {
     }
 
     private void gererCollisionObjets() {
-        for (int i = 0; i < listeObjets.size(); i++) {
-            for (int j = 0; j < listeObjets.get(i).size(); j++) {
-                
+        for (i = 0; i < listeRectangles.size(); i++) {
+            FakeRectangle x = listeRectangles.get(i);
+            for (int i = 0; i < listeObjets.size(); i++) {
+                for (int j = 0; j < listeObjets.get(i).size(); j++) {
+                    if (listeObjets.get(i).get(j).getRectangle().getBounds().intersects(x.getX(), x.getY() - 2, x.getWidth(), x.getHeight())) {
+                        System.out.println("max");
+                    }
+                }
             }
         }
     }
@@ -332,5 +337,6 @@ public class WindowGame extends BasicGameState {
         mario.updateAnimation();
         mario.gravity();
         gererCollisions(0);
+        gererCollisionObjets();
     }
 }

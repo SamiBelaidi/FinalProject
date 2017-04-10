@@ -59,6 +59,7 @@ public class Champignon implements Bougeable {
             }
         }
         x = x + vitesseX;
+        rectangle.setX(x);
     }
 
     public void changerDirection() {
@@ -92,6 +93,11 @@ public class Champignon implements Bougeable {
         animation2.addFrame(spriteSheet.getSubImage(0, 0), 100);
         animations[1] = animation2;
 
+    }
+
+    @Override
+    public FakeRectangle getRectangle() {
+        return rectangle;
     }
 
 }
