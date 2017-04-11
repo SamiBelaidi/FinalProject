@@ -16,7 +16,7 @@ import org.newdawn.slick.SpriteSheet;
 public class Champignon implements Bougeable {
 
     private int x, y, vitesseX;
-    private boolean goingRight = true, bouger, aTerre;
+    private boolean goingRight = true, bougeable, aTerre = false;
     private SpriteSheet spriteSheet;
     private Animation[] animations = new Animation[2];
     private int timeSpawn;
@@ -41,7 +41,7 @@ public class Champignon implements Bougeable {
         if ((wg.getTimer() - timeSpawn) <= 90) {
             return animations[0];
         } else {
-            bouger = true;
+            bougeable = true;
             return animations[1];
         }
     }
@@ -51,7 +51,7 @@ public class Champignon implements Bougeable {
     }
 
     public void bouger() {
-        if (bouger) {
+        if (bougeable && aTerre) {
             if (isGoingRight()) {
                 vitesseX = 1;
             } else {
@@ -75,13 +75,18 @@ public class Champignon implements Bougeable {
     }
 
     public void gravity() {
-        if (!aTerre) {
+        if (!aTerre && bougeable) {
             setY(y + 1);
         }
     }
 
+    public boolean isBougeable() {
+        return bougeable;
+    }
+
     public void setY(int y) {
         this.y = y;
+        rectangle.setY(y);
     }
 
     private void fillAnimations() {

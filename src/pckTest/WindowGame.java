@@ -76,6 +76,10 @@ public class WindowGame extends BasicGameState {
         return height;
     }
 
+    public ArrayList<ArrayList<Bougeable>> getListeObjets() {
+        return listeObjets;
+    }
+
     @Override
     public void keyReleased(int key, char c) {
         if (Input.KEY_ESCAPE == key) {
@@ -234,15 +238,25 @@ public class WindowGame extends BasicGameState {
     }
 
     private void gererCollisionObjets() {
-        for (i = 0; i < listeRectangles.size(); i++) {
-            FakeRectangle x = listeRectangles.get(i);
+        for (int z = 0; z < listeRectangles.size(); z++) {
+            FakeRectangle x = listeRectangles.get(z);
             for (int i = 0; i < listeObjets.size(); i++) {
                 for (int j = 0; j < listeObjets.get(i).size(); j++) {
-                    if (listeObjets.get(i).get(j).getRectangle().getBounds().intersects(x.getX(), x.getY() - 2, x.getWidth(), x.getHeight())) {
-                        System.out.println("max");
+                    if (listeObjets.get(i).get(j).getRectangle().getBounds().intersects(x.getX(), x.getY() - 2, x.getWidth(), x.getHeight()) && listeObjets.get(i).get(j).isBougeable()) {
+                        float yOverLap = calculateIntersectsY(listeObjets.get(i).get(j).getRectangle().getX(), listeObjets.get(i).get(j).getRectangle().getX() + 16, listeObjets.get(i).get(j).getRectangle().getY(), listeObjets.get(i).get(j).getRectangle().getY() + listeObjets.get(i).get(j).getRectangle().getHeight(), x.getX(), x.getX() + x.getWidth(), x.getY(), x.getY() + x.getHeight());
+                        if (yOverLap == 1) {
+                            listeObjets.get(i).get(j).setY(listeObjets.get(i).get(j).getY() - 1);
+                        }
                     }
                 }
             }
+        }
+    }
+
+    private void gererGravite() {
+        mario.gravity();
+        for (int i = 0; i < listeChampignons.size(); i++) {
+            listeChampignons.get(i).gravity();
         }
     }
 
@@ -335,7 +349,7 @@ public class WindowGame extends BasicGameState {
         } catch (InterruptedException e) {
         }
         mario.updateAnimation();
-        mario.gravity();
+        gererGravite();
         gererCollisions(0);
         gererCollisionObjets();
     }

@@ -14,8 +14,18 @@ import org.newdawn.slick.Animation;
 public interface Bougeable {
 
     public void bouger();
+
     public Animation getAnimation();
+
     public int getX();
+
     public int getY();
+
     public FakeRectangle getRectangle();
+
+    public void gravity();
+
+    public void setY(int y);
+
+    public boolean isBougeable();
 }
