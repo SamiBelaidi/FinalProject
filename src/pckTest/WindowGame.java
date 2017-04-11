@@ -246,7 +246,11 @@ public class WindowGame extends BasicGameState {
                         float yOverLap = calculateIntersectsY(listeObjets.get(i).get(j).getRectangle().getX(), listeObjets.get(i).get(j).getRectangle().getX() + 16, listeObjets.get(i).get(j).getRectangle().getY(), listeObjets.get(i).get(j).getRectangle().getY() + listeObjets.get(i).get(j).getRectangle().getHeight(), x.getX(), x.getX() + x.getWidth(), x.getY(), x.getY() + x.getHeight());
                         if (yOverLap == 1) {
                             listeObjets.get(i).get(j).setY(listeObjets.get(i).get(j).getY() - 1);
+                            listeObjets.get(i).get(j).setATerre(true);
                         }
+
+                    } else {
+                        listeObjets.get(i).get(j).setATerre(false);
                     }
                 }
             }
@@ -271,20 +275,19 @@ public class WindowGame extends BasicGameState {
     }
 
     private void gererCollisions(int y) throws SlickException {
-        int i = y;
         FakeRectangle x = null;
         boolean collision1 = false;
         //while (j < listeRectangles.size()) {
         boolean collision = false;
-        for (i = y; i < listeRectangles.size(); i++) {
+        for (int i = 0; i < listeRectangles.size(); i++) {
+
             x = listeRectangles.get(i);
-            if (mario.getRectangle().getBounds().intersects(x.getX(), x.getY() - 2, x.getWidth(), x.getHeight())) {
+            if (mario.getRectangle().getBounds().intersects(x.getX() - 1, x.getY() - 2, x.getWidth(), x.getHeight())) {
                 collision1 = true;
+
                 //collision = true;
                 // j = i + 1;
                 break;
-            } else {
-                //  collision1 = false;
             }
 
             //  }
@@ -309,9 +312,13 @@ public class WindowGame extends BasicGameState {
                     }
                     compteur++;
                 }
-            } else if (xOverLap == 0) {
+            } else if (xOverLap == 1) {
                 mario.setMoving(false);
-
+                System.out.println("mario x: " + mario.getX());
+                System.out.println("mario y: " + mario.getY());
+                System.out.println("block x: " + x.getX());
+                System.out.println("block y: " + x.getY());
+                System.out.println("");
             }
         } else {
             compteur = 0;

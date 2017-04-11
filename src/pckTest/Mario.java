@@ -225,6 +225,7 @@ public class Mario {
         }
         rectangle.setX(x);
         rectangle.setY(y);
+
     }
 
     public int getVitesseY() {

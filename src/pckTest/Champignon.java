@@ -50,7 +50,12 @@ public class Champignon implements Bougeable {
         return goingRight;
     }
 
+    public void setATerre(boolean aTerre) {
+        this.aTerre = aTerre;
+    }
+
     public void bouger() {
+
         if (bougeable && aTerre) {
             if (isGoingRight()) {
                 vitesseX = 1;
@@ -87,6 +92,11 @@ public class Champignon implements Bougeable {
     public void setY(int y) {
         this.y = y;
         rectangle.setY(y);
+    }
+
+    public void setX(int x) {
+        this.x = x;
+        rectangle.setX(x);
     }
 
     private void fillAnimations() {

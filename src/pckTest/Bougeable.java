@@ -27,5 +27,9 @@ public interface Bougeable {
 
     public void setY(int y);
 
+    public void setX(int x);
+
     public boolean isBougeable();
+
+    public void setATerre(boolean aTerre);
 }
