@@ -27,7 +27,7 @@ import org.newdawn.slick.state.StateBasedGame;
  * @author Sami
  */
 public class WindowGame extends BasicGameState {
-
+    
     static int ID = 2;
     private int timer = 0;
     private float xOverLap, yOverLap;
@@ -49,9 +49,9 @@ public class WindowGame extends BasicGameState {
     private Mario mario;
     private Menu startMenu;
     private static int height, width;
-
+    
     public WindowGame(int height, int width, int windowGame) throws SlickException {
-
+        
         this.height = height;
         this.width = width;
     }
@@ -67,19 +67,19 @@ public class WindowGame extends BasicGameState {
     public int getWidth() {
         return width;
     }
-
+    
     public int getTimer() {
         return timer;
     }
-
+    
     public int getHeight() {
         return height;
     }
-
+    
     public ArrayList<ArrayList<Bougeable>> getListeObjets() {
         return listeObjets;
     }
-
+    
     @Override
     public void keyReleased(int key, char c) {
         if (Input.KEY_ESCAPE == key) {
@@ -89,14 +89,14 @@ public class WindowGame extends BasicGameState {
             case Input.KEY_RIGHT:
                 if (mario.isGoingRight()) {
                     mario.setMoving(false);
-
+                    
                 }
                 break;
             case Input.KEY_LEFT:
                 if (!mario.isGoingRight()) {
-
+                    
                     mario.setMoving(false);
-
+                    
                 }
                 break;
             case Input.KEY_UP:
@@ -104,21 +104,21 @@ public class WindowGame extends BasicGameState {
         }
         mario.updateAnimation();
     }
-
+    
     @Override
     public void keyPressed(int key, char c) {
         switch (key) {
             case Input.KEY_LEFT:
                 mario.setGoingRight(false);
                 mario.setMoving(true);
-
+                
                 break;
             case Input.KEY_RIGHT:
                 mario.setGoingRight(true);
                 mario.setMoving(true);
                 break;
             case Input.KEY_DOWN:
-
+                
                 break;
             case Input.KEY_UP:
                 if (mario.isaTerre()) {
@@ -132,11 +132,11 @@ public class WindowGame extends BasicGameState {
                 break;
         }
     }
-
+    
     public ArrayList<FakeRectangle> getListeRectangles() {
         return listeRectangles;
     }
-
+    
     private void creerRectangleGround() throws SlickException {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
@@ -148,7 +148,7 @@ public class WindowGame extends BasicGameState {
             }
         }
     }
-
+    
     private void creerRectangleSurprise() {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
@@ -160,7 +160,7 @@ public class WindowGame extends BasicGameState {
             }
         }
     }
-
+    
     private void creerRectangleTube() {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
@@ -173,7 +173,7 @@ public class WindowGame extends BasicGameState {
             }
         }
     }
-
+    
     private void creerRectangleBloc() {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
@@ -185,7 +185,7 @@ public class WindowGame extends BasicGameState {
             }
         }
     }
-
+    
     private void creerRectangleFlag() {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
@@ -197,37 +197,42 @@ public class WindowGame extends BasicGameState {
             }
         }
     }
-
+    
     private void creerRectangle() throws SlickException {
         creerRectangleSurprise();
         creerRectangleGround();
         creerRectangleTube();
     }
-
+    
     private void dessinerRectangles(Graphics g) {
         if (rectVisible) {
             for (int i = 0; i < listeRectangles.size(); i++) {
                 g.draw(listeRectangles.get(i));
             }
             g.draw(mario.getRectangle());
+            for (int i = 0; i < listeObjets.size(); i++) {
+                for (int j = 0; j < listeObjets.get(i).size(); j++) {
+                    g.draw(listeObjets.get(i).get(j).getRectangle());
+                }
+            }
         }
     }
-
+    
     private void spawnChampignon(int x, int y, int timer) {
         Champignon champignon = new Champignon(x, y - 16, timer, this);
         listeChampignons.add((Bougeable) champignon);
     }
-
+    
     private void afficherObjets(Graphics g) {
         for (int i = 0; i < listeChampignons.size(); i++) {
             g.drawAnimation(listeChampignons.get(i).getAnimation(), listeChampignons.get(i).getX(), listeChampignons.get(i).getY());
         }
     }
-
+    
     private void fillListObjets() {
         listeObjets.add(listeChampignons);
     }
-
+    
     private void bouger(Graphics g) {
         mario.bouger(g);
         for (int i = 0; i < listeObjets.size(); i++) {
@@ -236,61 +241,66 @@ public class WindowGame extends BasicGameState {
             }
         }
     }
-
+    
     private void gererCollisionObjets() {
+        AWTEventMonitor.addWindowListener(new WindowAdapter() {
+        
+        
+        });
+        
         for (int z = 0; z < listeRectangles.size(); z++) {
             FakeRectangle x = listeRectangles.get(z);
             for (int i = 0; i < listeObjets.size(); i++) {
                 for (int j = 0; j < listeObjets.get(i).size(); j++) {
-                    if (listeObjets.get(i).get(j).getRectangle().getBounds().intersects(x.getX(), x.getY() - 2, x.getWidth(), x.getHeight()) && listeObjets.get(i).get(j).isBougeable()) {
-                        float yOverLap = calculateIntersectsY(listeObjets.get(i).get(j).getRectangle().getX(), listeObjets.get(i).get(j).getRectangle().getX() + 16, listeObjets.get(i).get(j).getRectangle().getY(), listeObjets.get(i).get(j).getRectangle().getY() + listeObjets.get(i).get(j).getRectangle().getHeight(), x.getX(), x.getX() + x.getWidth(), x.getY(), x.getY() + x.getHeight());
-                        if (yOverLap == 1) {
-                            listeObjets.get(i).get(j).setY(listeObjets.get(i).get(j).getY() - 1);
-                            listeObjets.get(i).get(j).setATerre(true);
+                    if (listeObjets.get(i).get(j).getRectangle().getBounds().intersects(x.getX() - 1, x.getY() - 2, x.getWidth(), x.getHeight())
+                            && listeObjets.get(i).get(j).isBougeable()) {
+                        // System.out.println("max");
+                        float yOverLap = calculateIntersectsY(listeObjets.get(i).get(j).getRectangle().getX(),
+                                listeObjets.get(i).get(j).getRectangle().getX() + 16, listeObjets.get(i).get(j).getRectangle().getY(),
+                                listeObjets.get(i).get(j).getRectangle().getY() + listeObjets.get(i).get(j).getRectangle().getHeight(), x.getX(),
+                                x.getX() + x.getWidth(), x.getY(), x.getY() + x.getHeight());
+                        if (listeObjets.get(i).get(j).getY() <= (x.getY())) {
+                            
                         }
-
+                        listeObjets.get(i).get(j).setATerre(true);
+                        break;
                     } else {
                         listeObjets.get(i).get(j).setATerre(false);
                     }
                 }
+                break;
             }
+            break;
         }
     }
-
+    
     private void gererGravite() {
         mario.gravity();
         for (int i = 0; i < listeChampignons.size(); i++) {
             listeChampignons.get(i).gravity();
         }
     }
-
+    
     private float calculateIntersectsX(float xa1, float xa2, float ya1, float ya2, float xb1, float xb2, float yb1, float yb2) {
         xOverLap = Math.max(0, Math.min(xa2, xb2) - Math.max(xa1, xb1));
         return yOverLap;
     }
-
+    
     private float calculateIntersectsY(float xa1, float xa2, float ya1, float ya2, float xb1, float xb2, float yb1, float yb2) {
         yOverLap = Math.max(0, Math.min(ya2, yb2) - Math.max(ya1, yb1));
         return yOverLap;
     }
-
+    
     private void gererCollisions(int y) throws SlickException {
         FakeRectangle x = null;
         boolean collision1 = false;
-        //while (j < listeRectangles.size()) {
-        boolean collision = false;
         for (int i = 0; i < listeRectangles.size(); i++) {
-
             x = listeRectangles.get(i);
             if (mario.getRectangle().getBounds().intersects(x.getX() - 1, x.getY() - 2, x.getWidth(), x.getHeight())) {
                 collision1 = true;
-
-                //collision = true;
-                // j = i + 1;
+                
                 break;
             }
-
-            //  }
         }
         if (collision1) {
             float xOverLap = calculateIntersectsX(mario.getRectangle().getX(), mario.getRectangle().getX() + 16, mario.getRectangle().getY(), mario.getRectangle().getY() + mario.getRectangle().getHeight(), x.getX(), x.getX() + x.getWidth(), x.getY(), x.getY() + x.getHeight());
@@ -313,23 +323,35 @@ public class WindowGame extends BasicGameState {
                     compteur++;
                 }
             } else if (xOverLap == 1) {
-                mario.setMoving(false);
-                System.out.println("mario x: " + mario.getX());
-                System.out.println("mario y: " + mario.getY());
-                System.out.println("block x: " + x.getX());
-                System.out.println("block y: " + x.getY());
-                System.out.println("");
+                
             }
+            /*   if (mario.getY() >= (x.getY())) {
+                    if (listeRectanglesSurprise.contains(x) && mario.isConditionThread()) {
+                        spawnChampignon((int) x.getX(), (int) x.getY(), timer);
+                        listeRectanglesSurprise.remove(x);
+                    }
+                    mario.setConditionThread(false);
+                } else if (mario.getY() + 16 <= (x.getY())) {
+                    mario.setaTerre(true);
+                    if (compteur == 0) {
+                        mario.setState(Mario.State.GROUND);
+                    }
+                    compteur++;
+
+                } else if (xOverLap == 0) {
+                    mario.setMoving(false);
+                }
+            }*/
         } else {
             compteur = 0;
             mario.setaTerre(false);
         }
     }
-
+    
     public int getID() {
         return ID;
     }
-
+    
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         this.container = container;
@@ -338,7 +360,7 @@ public class WindowGame extends BasicGameState {
         creerRectangle();
         fillListObjets();
     }
-
+    
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
         this.map.render(map.getRenderX(), map.getRenderY());
@@ -348,7 +370,7 @@ public class WindowGame extends BasicGameState {
         timer++;
         afficherObjets(g);
     }
-
+    
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
         try {
