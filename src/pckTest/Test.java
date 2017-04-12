@@ -17,7 +17,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class Test extends StateBasedGame {
 
     public static String gameName = "Smart Mario";
-    public static int startMenu = 0;
+    public static int startMenu = 1;
     public static int windowGame = 2;
     private static AppGameContainer app;
 
