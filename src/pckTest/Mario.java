@@ -28,6 +28,7 @@ public class Mario {
     private WindowGame window;
     private boolean conditionThread, aTerre = false;
     private boolean rectVisible;
+    private SoundFx sounds = new SoundFx();
 
     public enum State {
         CROUCH,
@@ -167,6 +168,12 @@ public class Mario {
 
     public void jump() {
         conditionThread = true;
+        
+        if(isBig()){
+            sounds.getJumpSuper().play();
+        }else{
+            sounds.getJumpSmall().play();
+        }
 
         Thread thread = new Thread(() -> {
             int i = 0;

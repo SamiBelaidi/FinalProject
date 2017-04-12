@@ -32,12 +32,12 @@ public class Menu extends BasicGameState {
 
     public Menu(int startMenu, AppGameContainer app) throws SlickException {
         this.app = app;
-        menu = new Image("menu.png");
+        menu = new Image("Images/menu.png");
     }
 
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         this.game = game;
-        this.background = new Image("backgroundMario.png");
+        this.background = new Image("Images/backgroundMario.png");
        
         
 
