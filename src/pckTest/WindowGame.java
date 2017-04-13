@@ -151,7 +151,7 @@ public class WindowGame extends BasicGameState {
         );
 
     }
-    
+
     public ArrayList<FakeRectangle> getListeRectangles() {
         return listeRectangles;
     }
@@ -340,7 +340,7 @@ public class WindowGame extends BasicGameState {
                     compteur++;
                 }
             } else if (xOverLap == 1) {
-
+                mario.setMoving(false);
             }
             /*   if (mario.getY() >= (x.getY())) {
                     if (listeRectanglesSurprise.contains(x) && mario.isConditionThread()) {

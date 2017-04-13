@@ -168,15 +168,16 @@ public class Mario {
 
     public void jump() {
         conditionThread = true;
-        
-        if(isBig()){
+
+        if (isBig()) {
             sounds.getJumpSuper().play();
-        }else{
+        } else {
             sounds.getJumpSmall().play();
         }
 
         Thread thread = new Thread(() -> {
             int i = 0;
+
             while (conditionThread && i < 70) {
                 try {
                     Thread.sleep(10);
