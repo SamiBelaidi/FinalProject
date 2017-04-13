@@ -20,9 +20,10 @@ public class Test extends StateBasedGame {
     public static int startMenu = 1;
     public static int windowGame = 2;
     private static AppGameContainer app;
+    boolean focus = false;
+    SoundFx sounds = new SoundFx();
 
     public static void main(String[] args) throws SlickException {
-
         try {
             app = new AppGameContainer(new Test(gameName));
             app.setDisplayMode(512, 512, false);
@@ -37,8 +38,11 @@ public class Test extends StateBasedGame {
     }
 
     public void initStatesList(GameContainer gc) throws SlickException {
+
+        app.setShowFPS(false);
         this.addState(new Menu(startMenu, app));
-        this.addState(new WindowGame(250, 640, windowGame));
+        this.addState(new WindowGame(250, 640, windowGame, app, this));
         this.enterState(startMenu);
+        
     }
 }

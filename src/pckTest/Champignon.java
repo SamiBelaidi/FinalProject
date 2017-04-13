@@ -22,7 +22,7 @@ public class Champignon implements Bougeable {
     private int timeSpawn;
     private WindowGame wg;
     private FakeRectangle rectangle;
-    
+
     public Champignon(int x, int y, int timeSpawn, WindowGame wg) {
         rectangle = new FakeRectangle(x, y, 16, 16);
         this.x = x;
@@ -42,7 +42,7 @@ public class Champignon implements Bougeable {
             return animations[0];
         } else {
             bougeable = true;
-            return animations[1];       
+            return animations[1];
         }
     }
 
@@ -56,8 +56,6 @@ public class Champignon implements Bougeable {
     }
 
     public void bouger() {
-        System.out.println("bougeable: " + bougeable);
-        System.out.println("aTerre   : " + aTerre);
         if (bougeable && aTerre) {
             if (isGoingRight()) {
                 vitesseX = 1;

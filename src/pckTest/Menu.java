@@ -29,7 +29,6 @@ public class Menu extends BasicGameState {
     private Graphics g;
     private SoundFx sounds = new SoundFx();
 
-
     public Menu(int startMenu, AppGameContainer app) throws SlickException {
         this.app = app;
         menu = new Image("Images/menu.png");
@@ -38,14 +37,12 @@ public class Menu extends BasicGameState {
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         this.game = game;
         this.background = new Image("Images/backgroundMario.png");
-       
-        
 
     }
 
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
         int posX = Mouse.getX();
-        int posY = (512-Mouse.getY());
+        int posY = (512 - Mouse.getY());
         System.out.println("x:" + posX + "y:" + posY);
 
         background.draw(0, 0, gc.getWidth(), gc.getHeight());
@@ -53,15 +50,13 @@ public class Menu extends BasicGameState {
         if ((posX > 146 && posX < 350) && (posY > 240 && posY < 253)) {
             if (Mouse.isInsideWindow()) {
                 g.drawImage(menu, 113, 236);
-                
-                
 
             }
 
             if (Mouse.isButtonDown(0)) {
                 sbg.enterState(2);
                 app.setDisplayMode(640, 250, false);
-                sounds.getItsMe().play();
+                //   sounds.getItsMe().play();
 
             }
         }
@@ -92,8 +87,6 @@ public class Menu extends BasicGameState {
         int posY = Mouse.getY();
 
     }
-
-    
 
     public int getID() {
         return ID;

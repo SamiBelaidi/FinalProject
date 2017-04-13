@@ -24,10 +24,11 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 public class WindowGame extends BasicGameState {
 
+    int x;
     static int ID = 2;
     private int timer = 0;
     private float xOverLap, yOverLap;
-    private boolean rectVisible = false;
+    private boolean rectVisible = false, focus;
     private FakeRectangle rectangle;
     private ArrayList<FakeRectangle> listeRectangles = new ArrayList();
     private ArrayList<FakeRectangle> listeRectanglesGround = new ArrayList();
@@ -46,11 +47,14 @@ public class WindowGame extends BasicGameState {
     private Menu startMenu;
     private static int height, width;
     private SoundFx sounds = new SoundFx();
+    private AppGameContainer app;
+    private StateBasedGame state;
 
-    public WindowGame(int height, int width, int windowGame) throws SlickException {
-
+    public WindowGame(int height, int width, int windowGame, AppGameContainer app, StateBasedGame state) throws SlickException {
+        this.app = app;
         this.height = height;
         this.width = width;
+        this.state = state;
     }
 
     /* private void fillListeRectangles() {
@@ -377,6 +381,20 @@ public class WindowGame extends BasicGameState {
         creerRectangle();
         fillListObjets();
         fenetreReduite();
+
+        Thread thread = new Thread(() -> {
+            int x = 0;
+            while (true) {
+                if (app.hasFocus() && !focus && state.getStateCount() == 1) {
+                    sounds.getItsMe().play();
+                    focus = true;
+                } else if (!app.hasFocus() && focus) {
+                    sounds.getBye().play();
+                    focus = false;
+                }
+            }
+        });
+        thread.start();
     }
 
     @Override
@@ -391,6 +409,7 @@ public class WindowGame extends BasicGameState {
 
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
+        app.setAlwaysRender(true);
         try {
             Thread.sleep(10);
         } catch (InterruptedException e) {
@@ -399,5 +418,6 @@ public class WindowGame extends BasicGameState {
         gererGravite();
         gererCollisions(0);
         gererCollisionObjets();
+
     }
 }
