@@ -16,7 +16,7 @@ import org.newdawn.slick.SpriteSheet;
 public class Champignon implements Bougeable {
 
     private int x, y, vitesseX;
-    private boolean goingRight = true, bougeable, aTerre = true;
+    private boolean goingRight = true, bougeable, aTerre = false;
     private SpriteSheet spriteSheet;
     private Animation[] animations = new Animation[2];
     private int timeSpawn;
@@ -24,9 +24,9 @@ public class Champignon implements Bougeable {
     private FakeRectangle rectangle;
 
     public Champignon(int x, int y, int timeSpawn, WindowGame wg) {
-        rectangle = new FakeRectangle(x, y, 16, 16);
+        rectangle = new FakeRectangle(x, y-5, 16, 16);
         this.x = x;
-        this.y = y;
+        this.y = y-5;
         this.wg = wg;
         try {
             spriteSheet = new SpriteSheet("sprites/champignon.gif", 16, 16);
@@ -52,7 +52,6 @@ public class Champignon implements Bougeable {
 
     public void setATerre(boolean aTerre) {
         this.aTerre = aTerre;
-        System.out.println("max" + aTerre);
     }
 
     public void bouger() {
@@ -92,6 +91,10 @@ public class Champignon implements Bougeable {
     public void setY(int y) {
         this.y = y;
         rectangle.setY(y);
+    }
+
+    public void setaTerre(boolean aTerre) {
+        this.aTerre = aTerre;
     }
 
     public void setX(int x) {

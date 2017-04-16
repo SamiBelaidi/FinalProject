@@ -21,4 +21,9 @@ public class FakeRectangle extends Rectangle {
         return new java.awt.Rectangle((int) x, (int) y, (int) width, (int) height);
     }
 
+    @Override
+    public String toString() {
+        return "X = " + x + " y = " + y;
+    }
+
 }

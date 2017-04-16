@@ -267,30 +267,43 @@ public class WindowGame extends BasicGameState {
     }
 
     private void gererCollisionObjets() {
-
         for (int z = 0; z < listeRectangles.size(); z++) {
             FakeRectangle x = listeRectangles.get(z);
             for (int i = 0; i < listeObjets.size(); i++) {
                 for (int j = 0; j < listeObjets.get(i).size(); j++) {
                     if (listeObjets.get(i).get(j).getRectangle().getBounds().intersects(x.getX() - 1, x.getY() - 2, x.getWidth(), x.getHeight())
                             && listeObjets.get(i).get(j).isBougeable()) {
-                        // System.out.println("max");
                         float yOverLap = calculateIntersectsY(listeObjets.get(i).get(j).getRectangle().getX(),
                                 listeObjets.get(i).get(j).getRectangle().getX() + 16, listeObjets.get(i).get(j).getRectangle().getY(),
                                 listeObjets.get(i).get(j).getRectangle().getY() + listeObjets.get(i).get(j).getRectangle().getHeight(), x.getX(),
                                 x.getX() + x.getWidth(), x.getY(), x.getY() + x.getHeight());
-                        if (listeObjets.get(i).get(j).getY() <= (x.getY())) {
-
+                        System.out.println("position champignon: " + listeObjets.get(i).get(j).getRectangle());
+                        System.out.println("position Bloc      : X = " + x.getX() + " y = " + x.getY());
+                        System.out.println("yOverlap " + yOverLap);
+                        if (yOverLap == 0) {
+                            listeObjets.get(i).get(j).setATerre(true);
                         }
-                        listeObjets.get(i).get(j).setATerre(true);
-                        break;
+
+                        /*  if (yOverLap < 6) {
+                            if (yOverLap == 1) {
+                                listeObjets.get(i).get(j).setY(listeObjets.get(i).get(j).getY() - 1);
+                            }
+                            if (listeObjets.get(i).get(j).getRectangle().getY() > x.getY()) {
+                            } else if (yOverLap == 0) {
+                                listeObjets.get(i).get(j).setATerre(true);
+                            }
+                        }
                     } else {
                         listeObjets.get(i).get(j).setATerre(false);
+                    }*/ {
+
+                        }
+                    } else {
+                        //   listeObjets.get(i).get(j).setATerre(false);
                     }
                 }
-                break;
             }
-            break;
+
         }
     }
 
@@ -333,7 +346,6 @@ public class WindowGame extends BasicGameState {
                     if (listeRectanglesSurprise.contains(x) && mario.isConditionThread()) {
                         spawnChampignon((int) x.getX(), (int) x.getY(), timer);
                         listeRectanglesSurprise.remove(x);
-                        sounds.getMushroom().play();
                     }
                     mario.setConditionThread(false);
                 } else if (yOverLap == 0) {
@@ -343,26 +355,10 @@ public class WindowGame extends BasicGameState {
                     }
                     compteur++;
                 }
-            } else if (xOverLap == 1) {
+            } else if (xOverLap == 0) {
                 mario.setMoving(false);
-            }
-            /*   if (mario.getY() >= (x.getY())) {
-                    if (listeRectanglesSurprise.contains(x) && mario.isConditionThread()) {
-                        spawnChampignon((int) x.getX(), (int) x.getY(), timer);
-                        listeRectanglesSurprise.remove(x);
-                    }
-                    mario.setConditionThread(false);
-                } else if (mario.getY() + 16 <= (x.getY())) {
-                    mario.setaTerre(true);
-                    if (compteur == 0) {
-                        mario.setState(Mario.State.GROUND);
-                    }
-                    compteur++;
 
-                } else if (xOverLap == 0) {
-                    mario.setMoving(false);
-                }
-            }*/
+            }
         } else {
             compteur = 0;
             mario.setaTerre(false);
@@ -395,6 +391,7 @@ public class WindowGame extends BasicGameState {
             }
         });
         thread.start();
+
     }
 
     @Override
@@ -405,19 +402,17 @@ public class WindowGame extends BasicGameState {
         bouger(g);
         timer++;
         afficherObjets(g);
-    }
-
-    @Override
-    public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
-        app.setAlwaysRender(true);
-        try {
-            Thread.sleep(10);
-        } catch (InterruptedException e) {
-        }
         mario.updateAnimation();
         gererGravite();
         gererCollisions(0);
         gererCollisionObjets();
+    }
 
+    @Override
+    public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) {
+        }
     }
 }

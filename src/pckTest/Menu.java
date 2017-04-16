@@ -43,7 +43,7 @@ public class Menu extends BasicGameState {
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
         int posX = Mouse.getX();
         int posY = (512 - Mouse.getY());
-        System.out.println("x:" + posX + "y:" + posY);
+        //   System.out.println("x:" + posX + "y:" + posY);
 
         background.draw(0, 0, gc.getWidth(), gc.getHeight());
 
