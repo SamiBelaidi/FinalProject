@@ -193,23 +193,25 @@ public class WindowGame extends BasicGameState {
             }
         }
     }
-
+    
     private void creerRectangleBloc() {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
-                if (map.getTileId(i, j, this.map.getLayerIndex("Bloc")) == 3) {
+                if (map.getTileId(i, j, this.map.getLayerIndex("Block")) == 3) {
                     FakeRectangle rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
-                    listeRectanglesBloc.add(rectangle);
+                    listeRectanglesSurprise.add(rectangle);
                     listeRectangles.add(rectangle);
                 }
             }
         }
     }
 
+
+    
     private void creerRectangleFlag() {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
-                if (map.getTileId(i, j, this.map.getLayerIndex("Bloc")) == 5) {
+                if (map.getTileId(i, j, this.map.getLayerIndex("Flag")) == 5) {
                     FakeRectangle rectangle = new FakeRectangle(i * 16, j * 16, 16, 16);
                     listeRectangles.add(rectangle);
                     listeRectanglesFlag.add(rectangle);
@@ -222,6 +224,7 @@ public class WindowGame extends BasicGameState {
         creerRectangleSurprise();
         creerRectangleGround();
         creerRectangleTube();
+        creerRectangleBloc();
     }
 
     private void dessinerRectangles(Graphics g) {
