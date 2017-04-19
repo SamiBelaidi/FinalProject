@@ -13,6 +13,7 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
@@ -38,6 +39,7 @@ public class WindowGame extends BasicGameState {
     private ArrayList<Bougeable> listeChampignons = new ArrayList();
     private ArrayList<ArrayList<Bougeable>> listeObjets = new ArrayList();
     private ArrayList<Woomba> listeWombas = new ArrayList();
+    private Image flag = new Image("Images/flag.png");
     private int compteur = 0;
     private GameContainer container;
     private Map map;
@@ -56,14 +58,6 @@ public class WindowGame extends BasicGameState {
         this.state = state;
     }
 
-    /* private void fillListeRectangles() {
-        listeRectangles.add(listeRectanglesBloc);
-        listeRectangles.add(listeRectanglesFlag);
-        listeRectangles.add(listeRectanglesSurprise);
-        listeRectangles.add(listeRectanglesGround);
-
-        listeRectangles.add(listeRectanglesTube);
-    }*/
     public int getWidth() {
         return width;
     }
@@ -291,9 +285,7 @@ public class WindowGame extends BasicGameState {
 
     private void gererGravite() {
         mario.gravity();
-        for (int i = 0; i < listeChampignons.size(); i++) {
-            //        listeChampignons.get(i).gravity();
-        }
+
     }
 
     private float calculateIntersectsX(float xa1, float xa2, float ya1, float ya2, float xb1, float xb2, float yb1, float yb2) {
