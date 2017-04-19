@@ -236,6 +236,17 @@ public class Mario {
 
     }
 
+    public void grandir() {
+        big = true;
+        rectangle.setHeight(32);
+        
+    }
+
+    public void rapetisser() {
+        big = false;
+        rectangle.setHeight(16);
+    }
+
     public int getVitesseY() {
         return 16;
     }

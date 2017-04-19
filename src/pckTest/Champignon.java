@@ -24,9 +24,9 @@ public class Champignon implements Bougeable {
     private FakeRectangle rectangle;
 
     public Champignon(int x, int y, int timeSpawn, WindowGame wg) {
-        rectangle = new FakeRectangle(x, y-5, 16, 16);
+        rectangle = new FakeRectangle(x, y, 16, 16);
         this.x = x;
-        this.y = y-5;
+        this.y = y;
         this.wg = wg;
         try {
             spriteSheet = new SpriteSheet("sprites/champignon.gif", 16, 16);

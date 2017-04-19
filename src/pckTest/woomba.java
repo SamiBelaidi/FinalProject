@@ -31,10 +31,10 @@ public class woomba {
     public void fillAnimations() {
         Animation animation = new Animation();
         animation.addFrame(spriteSheet.getSubImage(0, 0), 100);
-        animation.addFrame(spriteSheet.getSubImage(0, 1), 100);
+        animation.addFrame(spriteSheet.getSubImage(1, 0), 100);
         animations[0] = animation;
         Animation animation2 = new Animation();
-        animation2.addFrame(spriteSheet.getSubImage(0, 3), 100);
+        animation2.addFrame(spriteSheet.getSubImage(3, 0), 100);
         animations[1] = animation2;
     }
 }
