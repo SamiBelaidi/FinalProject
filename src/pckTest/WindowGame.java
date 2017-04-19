@@ -205,8 +205,6 @@ public class WindowGame extends BasicGameState {
             }
         }
     }
-
-
     
     private void creerRectangleFlag() {
         for (int i = 0; i < map.getWidth(); i++) {
@@ -225,6 +223,7 @@ public class WindowGame extends BasicGameState {
         creerRectangleGround();
         creerRectangleTube();
         creerRectangleBloc();
+        creerRectangleFlag();
     }
 
     private void dessinerRectangles(Graphics g) {
@@ -307,7 +306,7 @@ public class WindowGame extends BasicGameState {
         return yOverLap;
     }
 
-    private void gererCollisions() throws SlickException {
+    private void gererCollisions(Graphics g) throws SlickException {
         FakeRectangle x = null, y = null;
         int i;
         boolean collision1 = false;
@@ -320,6 +319,9 @@ public class WindowGame extends BasicGameState {
             }
         }
         if (collision1) {
+            if(listeRectanglesFlag.contains(x)){
+                g.drawImage(flag, mario.getX()+3, mario.getY());
+            }
             float xOverLap = calculateIntersectsX(mario.getRectangle().getX(), mario.getRectangle().getX() + 16, mario.getRectangle().getY(), mario.getRectangle().getY() + mario.getRectangle().getHeight(), x.getX(), x.getX() + x.getWidth(), x.getY(), x.getY() + x.getHeight());
             float yOverLap = calculateIntersectsY(mario.getRectangle().getX(), mario.getRectangle().getX() + 16, mario.getRectangle().getY(), mario.getRectangle().getY() + mario.getRectangle().getHeight(), x.getX(), x.getX() + x.getWidth(), x.getY(), x.getY() + x.getHeight());
             if (yOverLap < 6) {
@@ -397,7 +399,7 @@ public class WindowGame extends BasicGameState {
         afficherObjets(g);
         mario.updateAnimation();
         gererGravite();
-        gererCollisions();
+        gererCollisions(g);
         gererCollisionObjets();
     }
 
