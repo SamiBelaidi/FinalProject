@@ -39,5 +39,6 @@ public class Map extends TiledMap {
                 bg.getListeObjets().get(i).get(j).setX(bg.getListeObjets().get(i).get(j).getX() - 1);
             }
         }
+     //   for(int i=0;i<bg.getListe)
     }
 }

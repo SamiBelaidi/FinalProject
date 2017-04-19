@@ -26,10 +26,14 @@ public class Koopa implements Bougeable {
     private Animation[] animations = new Animation[4];
     private boolean isBroken, isMoving;
     private SpriteSheet spriteSheetRight, spriteSheetLeft;
+    private int xMax;
+    private FakeRectangle rectangle;
 
-    public Koopa(int x, int y) throws SlickException {
+    public Koopa(int x, int y, int xMax) throws SlickException {
         this.x = x;
         this.y = y;
+        rectangle = new FakeRectangle(x, y, 16, 16);
+        this.xMax = xMax;
         spriteSheetRight = new SpriteSheet("sprites/koopaRight.gif", 16, 16);
         spriteSheetLeft = new SpriteSheet("sprite/koopaLeft.gif", 16, 16);
         fillAnimations();
@@ -59,7 +63,12 @@ public class Koopa implements Bougeable {
 
     @Override
     public void bouger() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (x < xMax) {
+            x++;
+        } else {
+            x--;
+        }
+        rectangle.setX(x);
     }
 
     @Override
@@ -105,4 +114,5 @@ public class Koopa implements Bougeable {
     public void setATerre(boolean aTerre) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
 }

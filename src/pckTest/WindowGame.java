@@ -37,6 +37,7 @@ public class WindowGame extends BasicGameState {
     private ArrayList<FakeRectangle> listeRectanglesFlag = new ArrayList();
     private ArrayList<Bougeable> listeChampignons = new ArrayList();
     private ArrayList<ArrayList<Bougeable>> listeObjets = new ArrayList();
+    private ArrayList<Woomba> listeWombas = new ArrayList();
     private int compteur = 0;
     private GameContainer container;
     private Map map;
@@ -249,6 +250,9 @@ public class WindowGame extends BasicGameState {
         for (int i = 0; i < listeChampignons.size(); i++) {
             g.drawAnimation(listeChampignons.get(i).getAnimation(), listeChampignons.get(i).getX(), listeChampignons.get(i).getY());
         }
+        for (int i = 0; i < listeWombas.size(); i++) {
+            g.drawAnimation(listeWombas.get(i).getAnimation(), listeWombas.get(i).getX(), listeWombas.get(i).getY());
+        }
     }
 
     private void fillListObjets() {
@@ -257,6 +261,9 @@ public class WindowGame extends BasicGameState {
 
     private void bouger(Graphics g) {
         mario.bouger(g);
+        for (int i = 0; i < listeWombas.size(); i++) {
+            listeWombas.get(i).bouger();
+        }
         /*  for (int i = 0; i < listeObjets.size(); i++) {
             for (int j = 0; j < listeObjets.get(i).size(); j++) {
                 listeObjets.get(i).get(j).bouger();
@@ -288,6 +295,12 @@ public class WindowGame extends BasicGameState {
     private float calculateIntersectsX(float xa1, float xa2, float ya1, float ya2, float xb1, float xb2, float yb1, float yb2) {
         xOverLap = Math.max(0, Math.min(xa2, xb2) - Math.max(xa1, xb1));
         return yOverLap;
+    }
+
+    private void creerWoombas() throws SlickException {
+        Woomba woomba = new Woomba(448, 208, 544);
+        listeWombas.add(woomba);
+
     }
 
     private float calculateIntersectsY(float xa1, float xa2, float ya1, float ya2, float xb1, float xb2, float yb1, float yb2) {
@@ -328,8 +341,10 @@ public class WindowGame extends BasicGameState {
                     }
                     for (int j = i; j < listeRectangles.size(); j++) {
                         y = listeRectangles.get(j);
-                        if (mario.getRectangle().getBounds().intersects(x.getX() - 1, x.getY() - 2, x.getWidth(), x.getHeight())) {
-                            
+                        if (mario.getRectangle().getBounds().intersects(y.getX() - 1, y.getY() - 2, y.getWidth(), y.getHeight())) {
+                            if (y.getY() < x.getY()) {
+                                mario.setMoving(false);
+                            }
                         }
                     }
                 }
@@ -356,11 +371,11 @@ public class WindowGame extends BasicGameState {
         creerRectangle();
         fillListObjets();
         fenetreReduite();
-
+        creerWoombas();
         Thread thread = new Thread(() -> {
             int x = 0;
             while (true) {
-                if (app.hasFocus() && !focus && state.getStateCount() == 1) {
+                if (app.hasFocus() && !focus) {
                     sounds.getItsMe().play();
                     focus = true;
                 } else if (!app.hasFocus() && focus) {
