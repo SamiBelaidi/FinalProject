@@ -80,6 +80,10 @@ public class WindowGame extends BasicGameState {
         return listeObjets;
     }
 
+    public ArrayList<Woomba> getListeWombas() {
+        return listeWombas;
+    }
+
     @Override
     public void keyReleased(int key, char c) {
         if (Input.KEY_ESCAPE == key) {

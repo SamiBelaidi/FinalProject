@@ -39,6 +39,10 @@ public class Map extends TiledMap {
                 bg.getListeObjets().get(i).get(j).setX(bg.getListeObjets().get(i).get(j).getX() - 1);
             }
         }
-     //   for(int i=0;i<bg.getListe)
+        for (int i = 0; i < bg.getListeWombas().size(); i++) {
+            bg.getListeWombas().get(i).setX(bg.getListeWombas().get(i).getX() - 1);
+            bg.getListeWombas().get(i).setxMax(bg.getListeWombas().get(i).getxMax() - 1);
+            bg.getListeWombas().get(i).setxMin(bg.getListeWombas().get(i).getxMin() - 1);
+        }
     }
 }

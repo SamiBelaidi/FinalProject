@@ -1,5 +1,7 @@
 package pckTest;
 
+
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -15,7 +17,6 @@ import org.newdawn.slick.SpriteSheet;
  */
 public class Woomba {
 
-    int max;
     private int compteur;
     private int x, y, vitesseX;
     private Animation[] animations = new Animation[2];
@@ -24,11 +25,13 @@ public class Woomba {
     private int xMax;
     private boolean ecrase;
     private int xMin;
+    private FakeRectangle rectangle;
 
     public Woomba(int x, int y, int xMax) throws SlickException {
         this.x = x;
         this.y = y;
         xMin = x;
+        rectangle = new FakeRectangle(x, y, 16, 16);
         this.xMax = xMax;
         spriteSheet = new SpriteSheet("sprites/woomba.gif", 16, 16);
         fillAnimations();
@@ -55,6 +58,27 @@ public class Woomba {
 
     public int getX() {
         return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+        rectangle.setX(x);
+    }
+
+    public void setxMax(int xMax) {
+        this.xMax = xMax;
+    }
+
+    public void setxMin(int xMin) {
+        this.xMin = xMin;
+    }
+
+    public int getxMin() {
+        return xMin;
+    }
+
+    public int getxMax() {
+        return xMax;
     }
 
     public int getY() {
