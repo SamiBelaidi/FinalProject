@@ -32,7 +32,14 @@ public class Map extends TiledMap {
         return renderY;
     }
 
+    @Override
+    public int getWidth() {
+        return super.getWidth(); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public void avancer() {
+       
+
         renderX -= 1;
         for (int i = 0; i < bg.getListeObjets().size(); i++) {
             for (int j = 0; j < bg.getListeObjets().get(i).size(); j++) {
@@ -44,5 +51,6 @@ public class Map extends TiledMap {
             bg.getListeWombas().get(i).setxMax(bg.getListeWombas().get(i).getxMax() - 1);
             bg.getListeWombas().get(i).setxMin(bg.getListeWombas().get(i).getxMin() - 1);
         }
+
     }
 }

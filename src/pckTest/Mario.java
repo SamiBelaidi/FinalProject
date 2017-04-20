@@ -214,15 +214,19 @@ public class Mario {
 
     public void bouger(Graphics g) {
         if (isMoving()) {
+            System.out.println(map.getWidth() * 16 - 720);
+            System.out.println("r " + Math.abs(map.getRenderX()));
             if (isGoingRight()) {
                 if (x < (window.getWidth() / 3)) {
                     vitesseX = 1;
-                } else {
+                } else if (Math.abs(map.getRenderX()) <= (map.getWidth() * 16 - 720)) {
                     vitesseX = 0;
                     map.avancer();
                     for (int i = 0; i < window.getListeRectangles().size(); i++) {
                         window.getListeRectangles().get(i).setX(window.getListeRectangles().get(i).getX() - 1);
                     }
+                } else {
+                    vitesseX = 1;
                 }
             } else {
                 vitesseX = -1;
@@ -239,7 +243,7 @@ public class Mario {
     public void grandir() {
         big = true;
         rectangle.setHeight(32);
-        
+
     }
 
     public void rapetisser() {

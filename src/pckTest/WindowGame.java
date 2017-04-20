@@ -9,6 +9,7 @@ import com.sun.java.accessibility.util.AWTEventMonitor;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
@@ -28,7 +29,7 @@ public class WindowGame extends BasicGameState {
     static int ID = 2;
     private int timer = 0;
     private float xOverLap, yOverLap;
-    private boolean rectVisible = false, focus;
+    private boolean rectVisible = false, focus, drapeauAttrappé = false, conditionDrapeau = true;
     private FakeRectangle rectangle;
     private ArrayList<FakeRectangle> listeRectangles = new ArrayList();
     private ArrayList<FakeRectangle> listeRectanglesGround = new ArrayList();
@@ -38,7 +39,7 @@ public class WindowGame extends BasicGameState {
     private ArrayList<FakeRectangle> listeRectanglesFlag = new ArrayList();
     private ArrayList<Bougeable> listeChampignons = new ArrayList();
     private ArrayList<ArrayList<Bougeable>> listeObjets = new ArrayList();
-    private ArrayList<Woomba> listeWombas = new ArrayList();
+    private ArrayList<Goomba> listeWombas = new ArrayList();
     private Image flag = new Image("Images/flag.png");
     private int compteur = 0;
     private GameContainer container;
@@ -74,7 +75,7 @@ public class WindowGame extends BasicGameState {
         return listeObjets;
     }
 
-    public ArrayList<Woomba> getListeWombas() {
+    public ArrayList<Goomba> getListeWombas() {
         return listeWombas;
     }
 
@@ -105,29 +106,31 @@ public class WindowGame extends BasicGameState {
 
     @Override
     public void keyPressed(int key, char c) {
-        switch (key) {
-            case Input.KEY_LEFT:
-                mario.setGoingRight(false);
-                mario.setMoving(true);
+        if (!drapeauAttrappé) {
+            switch (key) {
+                case Input.KEY_LEFT:
+                    mario.setGoingRight(false);
+                    mario.setMoving(true);
 
-                break;
-            case Input.KEY_RIGHT:
-                mario.setGoingRight(true);
-                mario.setMoving(true);
-                break;
-            case Input.KEY_DOWN:
+                    break;
+                case Input.KEY_RIGHT:
+                    mario.setGoingRight(true);
+                    mario.setMoving(true);
+                    break;
+                case Input.KEY_DOWN:
 
-                break;
-            case Input.KEY_UP:
-                if (mario.isaTerre()) {
-                    mario.jump();
-                    mario.setState(Mario.State.JUMP);
-                }
-                break;
-            case Input.KEY_V:
-                rectVisible = !rectVisible;
-                mario.setRectVisible(!mario.isRectVisible());
-                break;
+                    break;
+                case Input.KEY_UP:
+                    if (mario.isaTerre()) {
+                        mario.jump();
+                        mario.setState(Mario.State.JUMP);
+                    }
+                    break;
+                case Input.KEY_V:
+                    rectVisible = !rectVisible;
+                    mario.setRectVisible(!mario.isRectVisible());
+                    break;
+            }
         }
     }
 
@@ -138,13 +141,11 @@ public class WindowGame extends BasicGameState {
             public void windowIconified(WindowEvent e) {
                 super.windowIconified(e);
                 sounds.getBye().play();
-                System.out.println("max");
             }
 
             @Override
             public void windowClosing(WindowEvent e) {
                 super.windowClosing(e);
-                System.out.println("fermer");
 
             }
 
@@ -193,7 +194,7 @@ public class WindowGame extends BasicGameState {
             }
         }
     }
-    
+
     private void creerRectangleBloc() {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
@@ -205,7 +206,7 @@ public class WindowGame extends BasicGameState {
             }
         }
     }
-    
+
     private void creerRectangleFlag() {
         for (int i = 0; i < map.getWidth(); i++) {
             for (int j = 0; j < map.getHeight(); j++) {
@@ -246,7 +247,6 @@ public class WindowGame extends BasicGameState {
     }
 
     private void afficherObjets(Graphics g) {
-        System.out.println(listeChampignons.size());
         for (int i = 0; i < listeChampignons.size(); i++) {
             g.drawAnimation(listeChampignons.get(i).getAnimation(), listeChampignons.get(i).getX(), listeChampignons.get(i).getY());
         }
@@ -296,7 +296,7 @@ public class WindowGame extends BasicGameState {
     }
 
     private void creerWoombas() throws SlickException {
-        Woomba woomba = new Woomba(448, 208, 544);
+        Goomba woomba = new Goomba(448, 208, 544);
         listeWombas.add(woomba);
 
     }
@@ -319,8 +319,9 @@ public class WindowGame extends BasicGameState {
             }
         }
         if (collision1) {
-            if(listeRectanglesFlag.contains(x)){
-                g.drawImage(flag, mario.getX()+3, mario.getY());
+            if (listeRectanglesFlag.contains(x)) {
+                g.drawImage(flag, mario.getX() + 3, mario.getY());
+                drapeauAttrappé = true;
             }
             float xOverLap = calculateIntersectsX(mario.getRectangle().getX(), mario.getRectangle().getX() + 16, mario.getRectangle().getY(), mario.getRectangle().getY() + mario.getRectangle().getHeight(), x.getX(), x.getX() + x.getWidth(), x.getY(), x.getY() + x.getHeight());
             float yOverLap = calculateIntersectsY(mario.getRectangle().getX(), mario.getRectangle().getX() + 16, mario.getRectangle().getY(), mario.getRectangle().getY() + mario.getRectangle().getHeight(), x.getX(), x.getX() + x.getWidth(), x.getY(), x.getY() + x.getHeight());
@@ -356,6 +357,16 @@ public class WindowGame extends BasicGameState {
         } else {
             compteur = 0;
             mario.setaTerre(false);
+        }
+    }
+
+    private void detecterFinGame() {
+        System.out.println(mario.getY());
+        if (drapeauAttrappé) {
+            if (mario.getY() == 192 && conditionDrapeau) {
+                JOptionPane.showMessageDialog(null, "easy win");
+                conditionDrapeau = false;
+            }
         }
     }
 
@@ -401,6 +412,7 @@ public class WindowGame extends BasicGameState {
         gererGravite();
         gererCollisions(g);
         gererCollisionObjets();
+        detecterFinGame();
     }
 
     @Override
