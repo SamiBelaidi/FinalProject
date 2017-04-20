@@ -214,8 +214,6 @@ public class Mario {
 
     public void bouger(Graphics g) {
         if (isMoving()) {
-            System.out.println(map.getWidth() * 16 - 720);
-            System.out.println("r " + Math.abs(map.getRenderX()));
             if (isGoingRight()) {
                 if (x < (window.getWidth() / 3)) {
                     vitesseX = 1;

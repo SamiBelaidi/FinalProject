@@ -29,7 +29,7 @@ public class WindowGame extends BasicGameState {
     static int ID = 2;
     private int timer = 0;
     private float xOverLap, yOverLap;
-    private boolean rectVisible = false, focus, drapeauAttrappé = false, conditionDrapeau = true;
+    private boolean rectVisible = false, focus, gameFini = false, conditionFin = true;
     private FakeRectangle rectangle;
     private ArrayList<FakeRectangle> listeRectangles = new ArrayList();
     private ArrayList<FakeRectangle> listeRectanglesGround = new ArrayList();
@@ -39,7 +39,7 @@ public class WindowGame extends BasicGameState {
     private ArrayList<FakeRectangle> listeRectanglesFlag = new ArrayList();
     private ArrayList<Bougeable> listeChampignons = new ArrayList();
     private ArrayList<ArrayList<Bougeable>> listeObjets = new ArrayList();
-    private ArrayList<Goomba> listeWombas = new ArrayList();
+    private ArrayList<Goomba> listeGoombas = new ArrayList();
     private Image flag = new Image("Images/flag.png");
     private int compteur = 0;
     private GameContainer container;
@@ -76,7 +76,7 @@ public class WindowGame extends BasicGameState {
     }
 
     public ArrayList<Goomba> getListeWombas() {
-        return listeWombas;
+        return listeGoombas;
     }
 
     @Override
@@ -106,7 +106,7 @@ public class WindowGame extends BasicGameState {
 
     @Override
     public void keyPressed(int key, char c) {
-        if (!drapeauAttrappé) {
+        if (!gameFini) {
             switch (key) {
                 case Input.KEY_LEFT:
                     mario.setGoingRight(false);
@@ -238,6 +238,9 @@ public class WindowGame extends BasicGameState {
                     g.draw(listeObjets.get(i).get(j).getRectangle());
                 }
             }
+            for (int i = 0; i < listeGoombas.size(); i++) {
+                g.draw(listeGoombas.get(i).getRectangle());
+            }
         }
     }
 
@@ -250,8 +253,8 @@ public class WindowGame extends BasicGameState {
         for (int i = 0; i < listeChampignons.size(); i++) {
             g.drawAnimation(listeChampignons.get(i).getAnimation(), listeChampignons.get(i).getX(), listeChampignons.get(i).getY());
         }
-        for (int i = 0; i < listeWombas.size(); i++) {
-            g.drawAnimation(listeWombas.get(i).getAnimation(), listeWombas.get(i).getX(), listeWombas.get(i).getY());
+        for (int i = 0; i < listeGoombas.size(); i++) {
+            g.drawAnimation(listeGoombas.get(i).getAnimation(), listeGoombas.get(i).getX(), listeGoombas.get(i).getY());
         }
     }
 
@@ -261,8 +264,8 @@ public class WindowGame extends BasicGameState {
 
     private void bouger(Graphics g) {
         mario.bouger(g);
-        for (int i = 0; i < listeWombas.size(); i++) {
-            listeWombas.get(i).bouger();
+        for (int i = 0; i < listeGoombas.size(); i++) {
+            listeGoombas.get(i).bouger();
         }
         /*  for (int i = 0; i < listeObjets.size(); i++) {
             for (int j = 0; j < listeObjets.get(i).size(); j++) {
@@ -272,13 +275,31 @@ public class WindowGame extends BasicGameState {
     }
 
     private void gererCollisionObjets() {
-        for (int z = 0; z < listeRectangles.size(); z++) {
-            FakeRectangle x = listeRectangles.get(z);
-            for (int i = 0; i < listeObjets.size(); i++) {
-                for (int j = 0; j < listeObjets.get(i).size(); j++) {
-                    if (listeObjets.get(i).get(j).getRectangle().getBounds().intersects(mario.getRectangle().getBounds())) {
-                        mario.grandir();
-                        listeObjets.get(i).remove(j);
+
+        for (int i = 0; i < listeObjets.size(); i++) {
+            for (int j = 0; j < listeObjets.get(i).size(); j++) {
+                if (listeObjets.get(i).get(j).getRectangle().getBounds().intersects(mario.getRectangle().getBounds())) {
+                    mario.grandir();
+                    listeObjets.get(i).remove(j);
+                }
+            }
+        }
+        for (int i = 0; i < listeGoombas.size(); i++) {
+            if (listeGoombas.get(i).getRectangle().getBounds().intersects(mario.getRectangle().getBounds()) && !listeGoombas.get(i).isEcrase()) {
+                System.out.println("mario " + mario.getY());
+                System.out.println("Goomba " + listeGoombas.get(i).getY());
+                if ((mario.getY() + 14) == listeGoombas.get(i).getY()) {
+                    System.out.println("ecrase");
+                    listeGoombas.get(i).setEcrase(true);
+                } else {
+                    if (mario.isBig()) {
+                        mario.setBig(false);
+                    } else {
+                        if (conditionFin) {
+                            JOptionPane.showMessageDialog(null, "FF20");
+                            gameFini = true;
+                            conditionFin = false;
+                        }
                     }
                 }
             }
@@ -296,8 +317,8 @@ public class WindowGame extends BasicGameState {
     }
 
     private void creerWoombas() throws SlickException {
-        Goomba woomba = new Goomba(448, 208, 544);
-        listeWombas.add(woomba);
+        Goomba Goomba = new Goomba(448, 208, 544, this);
+        listeGoombas.add(Goomba);
 
     }
 
@@ -321,7 +342,7 @@ public class WindowGame extends BasicGameState {
         if (collision1) {
             if (listeRectanglesFlag.contains(x)) {
                 g.drawImage(flag, mario.getX() + 3, mario.getY());
-                drapeauAttrappé = true;
+                gameFini = true;
             }
             float xOverLap = calculateIntersectsX(mario.getRectangle().getX(), mario.getRectangle().getX() + 16, mario.getRectangle().getY(), mario.getRectangle().getY() + mario.getRectangle().getHeight(), x.getX(), x.getX() + x.getWidth(), x.getY(), x.getY() + x.getHeight());
             float yOverLap = calculateIntersectsY(mario.getRectangle().getX(), mario.getRectangle().getX() + 16, mario.getRectangle().getY(), mario.getRectangle().getY() + mario.getRectangle().getHeight(), x.getX(), x.getX() + x.getWidth(), x.getY(), x.getY() + x.getHeight());
@@ -361,11 +382,10 @@ public class WindowGame extends BasicGameState {
     }
 
     private void detecterFinGame() {
-        System.out.println(mario.getY());
-        if (drapeauAttrappé) {
-            if (mario.getY() == 192 && conditionDrapeau) {
+        if (gameFini) {
+            if (mario.getY() == 192 && conditionFin) {
                 JOptionPane.showMessageDialog(null, "easy win");
-                conditionDrapeau = false;
+                conditionFin = false;
             }
         }
     }

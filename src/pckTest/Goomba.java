@@ -1,13 +1,5 @@
 package pckTest;
 
-
-
-
-
-
-
-
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -32,8 +24,9 @@ public class Goomba {
     private boolean ecrase;
     private int xMin;
     private FakeRectangle rectangle;
+    private WindowGame wg;
 
-    public Goomba(int x, int y, int xMax) throws SlickException {
+    public Goomba(int x, int y, int xMax, WindowGame wg) throws SlickException {
         this.x = x;
         this.y = y;
         xMin = x;
@@ -60,10 +53,19 @@ public class Goomba {
             vitesseX = -1;
         }
         x = x + vitesseX;
+        rectangle.setX(x);
     }
 
     public int getX() {
         return x;
+    }
+
+    public boolean isEcrase() {
+        return ecrase;
+    }
+
+    public void setEcrase(boolean ecrase) {
+        this.ecrase = ecrase;
     }
 
     public void setX(int x) {
@@ -89,6 +91,10 @@ public class Goomba {
 
     public int getY() {
         return y;
+    }
+
+    public FakeRectangle getRectangle() {
+        return rectangle;
     }
 
     public Animation getAnimation() {
