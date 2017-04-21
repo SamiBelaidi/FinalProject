@@ -17,22 +17,25 @@ public class Goomba {
 
     private int compteur;
     private int x, y, vitesseX;
-    private Animation[] animations = new Animation[2];
+    private Animation[] animations = new Animation[3];
     private boolean isDead = false;
-    private SpriteSheet spriteSheet;
+    private SpriteSheet spriteSheet, spriteSheetVide;
     private int xMax;
     private boolean ecrase;
     private int xMin;
     private FakeRectangle rectangle;
     private WindowGame wg;
+    private int timerEcrase;
 
     public Goomba(int x, int y, int xMax, WindowGame wg) throws SlickException {
         this.x = x;
         this.y = y;
         xMin = x;
+        this.wg = wg;
         rectangle = new FakeRectangle(x, y, 16, 16);
         this.xMax = xMax;
         spriteSheet = new SpriteSheet("sprites/woomba.gif", 16, 16);
+        spriteSheetVide = new SpriteSheet("sprites/vide.gif", 16, 16);
         fillAnimations();
     }
 
@@ -44,6 +47,9 @@ public class Goomba {
         Animation animation2 = new Animation();
         animation2.addFrame(spriteSheet.getSubImage(2, 0), 100);
         animations[1] = animation2;
+        Animation animation3 = new Animation();
+        animation3.addFrame(spriteSheetVide.getSubImage(0, 0), 100);
+        animations[2] = animation3;
     }
 
     public void bouger() {
@@ -52,8 +58,10 @@ public class Goomba {
         } else if (x == xMax) {
             vitesseX = -1;
         }
-        x = x + vitesseX;
-        rectangle.setX(x);
+        if (!ecrase) {
+            x = x + vitesseX;
+            rectangle.setX(x);
+        }
     }
 
     public int getX() {
@@ -65,6 +73,9 @@ public class Goomba {
     }
 
     public void setEcrase(boolean ecrase) {
+        if (ecrase) {
+            timerEcrase = wg.getTimer();
+        }
         this.ecrase = ecrase;
     }
 
@@ -98,10 +109,12 @@ public class Goomba {
     }
 
     public Animation getAnimation() {
-        if (ecrase) {
+        if (!ecrase) {
+            return animations[0];
+        } else if ((wg.getTimer() - timerEcrase) < 40) {
             return animations[1];
         } else {
-            return animations[0];
+            return animations[2];
         }
     }
 }

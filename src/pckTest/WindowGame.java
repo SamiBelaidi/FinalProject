@@ -291,6 +291,7 @@ public class WindowGame extends BasicGameState {
                 if ((mario.getY() + 14) == listeGoombas.get(i).getY()) {
                     System.out.println("ecrase");
                     listeGoombas.get(i).setEcrase(true);
+                    int temp = 0;
                 } else {
                     if (mario.isBig()) {
                         mario.setBig(false);
