@@ -300,7 +300,9 @@ public class WindowGame extends BasicGameState {
                         mario.setBig(false);
                     } else {
                         if (conditionFin) {
-                            JOptionPane.showMessageDialog(null, "FF20");
+                            mario.setState(Mario.State.DEAD);
+                            mario.jump(50);
+                            //JOptionPane.showMessageDialog(null, "FF20");
                             gameFini = true;
                             conditionFin = false;
                         }
@@ -453,7 +455,9 @@ public class WindowGame extends BasicGameState {
         afficherObjets(g);
         mario.updateAnimation();
         gererGravite();
+        if(mario.getState()!= Mario.State.DEAD){
         gererCollisions(g);
+        }
         gererCollisionObjets();
         detecterFinGame();
         for (int i = 0; i < listeRectangles.size(); i++) {

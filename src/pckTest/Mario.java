@@ -20,7 +20,7 @@ public class Mario {
     private FakeRectangle rectangle;
     private boolean goingRight, big;
     private boolean moving = false;
-    private Animation[] animations = new Animation[20];
+    private Animation[] animations = new Animation[21];
     private final SpriteSheet[] sprites = new SpriteSheet[4];
     private Animation animation;
     private int positionAnimation;
@@ -33,6 +33,7 @@ public class Mario {
     public enum State {
         CROUCH,
         JUMP,
+        DEAD,
         GROUND;
     }
     private State state;
@@ -69,7 +70,10 @@ public class Mario {
             animations[i + 8] = creerAnimationSaut(sprites[i]);
             animations[i + 12] = creerAnimationChangementDeDirection(sprites[i]);
             animations[i + 16] = creerAnimationCrouchMort(sprites[i]);
+            
         }
+        animations[20] = new Animation();
+        animations[20].addFrame(sprites[1].getSubImage(6 ,0), 100);
     }
 
     private Animation creerAnimationDebout(SpriteSheet sprite) {
@@ -293,7 +297,9 @@ public class Mario {
     }
 
     public void updateAnimation() {
-        if (isBig()) {
+        if (state == State.DEAD){
+            animation = animations[20];
+        }else if (isBig()) {
             if (isGoingRight()) {
                 switch (state) {
                     case JUMP:
@@ -360,7 +366,7 @@ public class Mario {
                         }
                         break;
                 }
-            }
+            } 
         }
     }
 
