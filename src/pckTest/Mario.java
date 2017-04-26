@@ -70,10 +70,10 @@ public class Mario {
             animations[i + 8] = creerAnimationSaut(sprites[i]);
             animations[i + 12] = creerAnimationChangementDeDirection(sprites[i]);
             animations[i + 16] = creerAnimationCrouchMort(sprites[i]);
-            
+
         }
         animations[20] = new Animation();
-        animations[20].addFrame(sprites[1].getSubImage(6 ,0), 100);
+        animations[20].addFrame(sprites[1].getSubImage(6, 0), 100);
     }
 
     private Animation creerAnimationDebout(SpriteSheet sprite) {
@@ -297,76 +297,78 @@ public class Mario {
     }
 
     public void updateAnimation() {
-        if (state == State.DEAD){
+        if (state == State.DEAD) {
             animation = animations[20];
-        }else if (isBig()) {
-            if (isGoingRight()) {
-                switch (state) {
-                    case JUMP:
-                        animation = animations[8];
-                        break;
-                    case CROUCH:
-                        animation = animations[16];
-                        break;
-                    case GROUND:
-                        if (isMoving()) {
-                            animation = animations[4];
-                        } else {
-                            animation = animations[0];
-                        }
-                        break;
+        } else {
+            if (isBig()) {
+                if (isGoingRight()) {
+                    switch (state) {
+                        case JUMP:
+                            animation = animations[8];
+                            break;
+                        case CROUCH:
+                            animation = animations[16];
+                            break;
+                        case GROUND:
+                            if (isMoving()) {
+                                animation = animations[4];
+                            } else {
+                                animation = animations[0];
+                            }
+                            break;
+                    }
+                } else {
+                    switch (state) {
+                        case JUMP:
+                            animation = animations[10];
+                            break;
+                        case CROUCH:
+                            animation = animations[18];
+                            break;
+                        case GROUND:
+                            if (isMoving()) {
+                                animation = animations[6];
+                            } else {
+                                animation = animations[2];
+                            }
+                            break;
+                    }
                 }
             } else {
-                switch (state) {
-                    case JUMP:
-                        animation = animations[10];
-                        break;
-                    case CROUCH:
-                        animation = animations[18];
-                        break;
-                    case GROUND:
-                        if (isMoving()) {
-                            animation = animations[6];
-                        } else {
-                            animation = animations[2];
-                        }
-                        break;
+                if (isGoingRight()) {
+                    switch (state) {
+                        case JUMP:
+                            animation = animations[9];
+                            break;
+                        case CROUCH:
+                            animation = animations[1];
+                            break;
+                        case GROUND:
+                            if (isMoving()) {
+                                animation = animations[5];
+                            } else {
+                                animation = animations[1];
+                            }
+                            break;
+                    }
+                } else {
+                    switch (state) {
+                        case JUMP:
+                            animation = animations[11];
+                            break;
+                        case CROUCH:
+                            animation = animations[3];
+                            break;
+                        case GROUND:
+                            if (isMoving()) {
+                                animation = animations[7];
+                            } else {
+                                animation = animations[3];
+                            }
+                            break;
+                    }
                 }
             }
-        } else {
-            if (isGoingRight()) {
-                switch (state) {
-                    case JUMP:
-                        animation = animations[9];
-                        break;
-                    case CROUCH:
-                        animation = animations[1];
-                        break;
-                    case GROUND:
-                        if (isMoving()) {
-                            animation = animations[5];
-                        } else {
-                            animation = animations[1];
-                        }
-                        break;
-                }
-            } else {
-                switch (state) {
-                    case JUMP:
-                        animation = animations[11];
-                        break;
-                    case CROUCH:
-                        animation = animations[3];
-                        break;
-                    case GROUND:
-                        if (isMoving()) {
-                            animation = animations[7];
-                        } else {
-                            animation = animations[3];
-                        }
-                        break;
-                }
-            } 
         }
     }
 

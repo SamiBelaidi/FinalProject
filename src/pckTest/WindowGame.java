@@ -356,7 +356,6 @@ public class WindowGame extends BasicGameState {
             x = listeRectangles.get(i);
             if (mario.getRectangle().getBounds().intersects(x.getX() - 1, x.getY() - 2, x.getWidth(), x.getHeight())) {
                 collision1 = true;
-
                 break;
             }
         }
@@ -455,10 +454,11 @@ public class WindowGame extends BasicGameState {
         afficherObjets(g);
         mario.updateAnimation();
         gererGravite();
-        if(mario.getState()!= Mario.State.DEAD){
-        gererCollisions(g);
-        }
         gererCollisionObjets();
+        if (mario.getState() != Mario.State.DEAD) {
+            gererCollisions(g);
+        }
+
         detecterFinGame();
         for (int i = 0; i < listeRectangles.size(); i++) {
             if (mario.getY() - listeRectangles.get(i).getY() <= 16
