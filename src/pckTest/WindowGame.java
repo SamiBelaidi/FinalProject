@@ -27,7 +27,8 @@ import org.newdawn.slick.state.StateBasedGame;
 public class WindowGame extends BasicGameState {
 
     private static int ID = 2;
-    private int timer = 0;
+    private int timer = 0, x = 0;
+    boolean miche = true;
     private float xOverLap, yOverLap;
     private boolean rectVisible = false, focus, gameFini = false, conditionFin = true, touchesActives = true, AI, doMove = true, doJump = true;
     private ArrayList<FakeRectangle> listeRectangles = new ArrayList();
@@ -134,6 +135,9 @@ public class WindowGame extends BasicGameState {
                 case Input.KEY_V:
                     rectVisible = !rectVisible;
                     mario.setRectVisible(!mario.isRectVisible());
+                    break;
+                case Input.KEY_M:
+                    miche = !miche;
                     break;
             }
         }
@@ -349,6 +353,12 @@ public class WindowGame extends BasicGameState {
     }
 
     private void gererCollisions(Graphics g) throws SlickException {
+        if (miche) {
+        
+        
+
+            System.out.println(this.x++);
+        }
         FakeRectangle x = null, y = null;
         int i;
         boolean collision1 = false;
@@ -371,12 +381,10 @@ public class WindowGame extends BasicGameState {
                     mario.setY(mario.getY() - 1);
                 }
                 if (mario.getRectangle().getY() > x.getY()) {
-                    if (listeRectanglesSurprise.contains(x) && mario.isConditionThread()) {
-                        spawnChampignon((int) x.getX(), (int) x.getY(), timer);
-                        listeRectanglesSurprise.remove(x);
-                    }
+
                     mario.setConditionThread(false);
                 } else if (yOverLap == 0) {
+
                     mario.setaTerre(true);
                     if (compteur == 0) {
                         mario.setState(Mario.State.GROUND);
