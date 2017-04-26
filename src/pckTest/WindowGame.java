@@ -26,11 +26,10 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 public class WindowGame extends BasicGameState {
 
-    static int ID = 2;
+    private static int ID = 2;
     private int timer = 0;
     private float xOverLap, yOverLap;
-    private boolean rectVisible = false, focus, gameFini = false, conditionFin = true, touchesActives = true, AI, doAI = true;
-    private FakeRectangle rectangle;
+    private boolean rectVisible = false, focus, gameFini = false, conditionFin = true, touchesActives = true, AI, doMove = true, doJump = true;
     private ArrayList<FakeRectangle> listeRectangles = new ArrayList();
     private ArrayList<FakeRectangle> listeRectanglesGround = new ArrayList();
     private ArrayList<FakeRectangle> listeRectanglesSurprise = new ArrayList();
@@ -128,7 +127,7 @@ public class WindowGame extends BasicGameState {
                     break;
                 case Input.KEY_UP:
                     if (mario.isaTerre()) {
-                        mario.jump();
+                        mario.jump(70);
                         mario.setState(Mario.State.JUMP);
                     }
                     break;
@@ -328,10 +327,17 @@ public class WindowGame extends BasicGameState {
     }
 
     private void intelligenceArtificielle() {
-        if (doAI) {
+        if (doMove) {
             mario.setGoingRight(true);
             mario.setMoving(true);
-            doAI = false;
+            doMove = false;
+        }
+        for (int i = 0; i < listeRectangles.size(); i++) {
+            if (mario.getY() - listeRectangles.get(i).getY() <= 16
+                    && mario.getY() - listeRectangles.get(i).getY() >= 0
+                    && listeRectangles.get(i).getX() - mario.getX() == 16) {
+                mario.jump(70);
+            }
         }
     }
 
@@ -450,7 +456,13 @@ public class WindowGame extends BasicGameState {
         gererCollisions(g);
         gererCollisionObjets();
         detecterFinGame();
+        for (int i = 0; i < listeRectangles.size(); i++) {
+            if (mario.getY() - listeRectangles.get(i).getY() <= 16
+                    && mario.getY() - listeRectangles.get(i).getY() >= 0
+                    && listeRectangles.get(i).getX() - mario.getX() == 24) {
 
+            }
+        }
     }
 
     @Override
