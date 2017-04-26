@@ -29,7 +29,7 @@ public class WindowGame extends BasicGameState {
     static int ID = 2;
     private int timer = 0;
     private float xOverLap, yOverLap;
-    private boolean rectVisible = false, focus, gameFini = false, conditionFin = true;
+    private boolean rectVisible = false, focus, gameFini = false, conditionFin = true, touchesActives = true, AI, doAI = true;
     private FakeRectangle rectangle;
     private ArrayList<FakeRectangle> listeRectangles = new ArrayList();
     private ArrayList<FakeRectangle> listeRectanglesGround = new ArrayList();
@@ -57,6 +57,10 @@ public class WindowGame extends BasicGameState {
         this.height = height;
         this.width = width;
         this.state = state;
+    }
+
+    public void setAI(boolean AI) {
+        this.AI = AI;
     }
 
     public int getWidth() {
@@ -93,9 +97,7 @@ public class WindowGame extends BasicGameState {
                 break;
             case Input.KEY_LEFT:
                 if (!mario.isGoingRight()) {
-
                     mario.setMoving(false);
-
                 }
                 break;
             case Input.KEY_UP:
@@ -104,9 +106,13 @@ public class WindowGame extends BasicGameState {
         mario.updateAnimation();
     }
 
+    public void setTouchesActives(boolean touchesActives) {
+        this.touchesActives = touchesActives;
+    }
+
     @Override
     public void keyPressed(int key, char c) {
-        if (!gameFini) {
+        if (!gameFini && touchesActives && !AI) {
             switch (key) {
                 case Input.KEY_LEFT:
                     mario.setGoingRight(false);
@@ -286,10 +292,8 @@ public class WindowGame extends BasicGameState {
         }
         for (int i = 0; i < listeGoombas.size(); i++) {
             if (listeGoombas.get(i).getRectangle().getBounds().intersects(mario.getRectangle().getBounds()) && !listeGoombas.get(i).isEcrase()) {
-                System.out.println("mario " + mario.getY());
-                System.out.println("Goomba " + listeGoombas.get(i).getY());
                 if ((mario.getY() + 14) == listeGoombas.get(i).getY()) {
-                    System.out.println("ecrase");
+                    mario.jumpMonstre();
                     listeGoombas.get(i).setEcrase(true);
                     int temp = 0;
                 } else {
@@ -321,6 +325,14 @@ public class WindowGame extends BasicGameState {
         Goomba Goomba = new Goomba(448, 208, 544, this);
         listeGoombas.add(Goomba);
 
+    }
+
+    private void intelligenceArtificielle() {
+        if (doAI) {
+            mario.setGoingRight(true);
+            mario.setMoving(true);
+            doAI = false;
+        }
     }
 
     private float calculateIntersectsY(float xa1, float xa2, float ya1, float ya2, float xb1, float xb2, float yb1, float yb2) {
@@ -384,7 +396,8 @@ public class WindowGame extends BasicGameState {
 
     private void detecterFinGame() {
         if (gameFini) {
-            if (mario.getY() == 192 && conditionFin) {
+            if (mario.getY() == 192 && conditionFin && !mario.isBig()
+                    || mario.getY() == 176 && conditionFin && mario.isBig()) {
                 JOptionPane.showMessageDialog(null, "easy win");
                 conditionFin = false;
             }
@@ -423,6 +436,9 @@ public class WindowGame extends BasicGameState {
 
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+        if (AI) {
+            intelligenceArtificielle();
+        }
         this.map.render(map.getRenderX(), map.getRenderY());
         g.drawAnimation(mario.getAnimation(), mario.getX(), mario.getY());
         dessinerRectangles(g);
@@ -434,6 +450,7 @@ public class WindowGame extends BasicGameState {
         gererCollisions(g);
         gererCollisionObjets();
         detecterFinGame();
+
     }
 
     @Override

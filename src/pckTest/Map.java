@@ -39,7 +39,6 @@ public class Map extends TiledMap {
 
     public void avancer() {
        
-
         renderX -= 1;
         for (int i = 0; i < bg.getListeObjets().size(); i++) {
             for (int j = 0; j < bg.getListeObjets().get(i).size(); j++) {

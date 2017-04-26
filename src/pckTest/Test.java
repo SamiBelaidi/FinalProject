@@ -38,11 +38,11 @@ public class Test extends StateBasedGame {
     }
 
     public void initStatesList(GameContainer gc) throws SlickException {
-
+        WindowGame wg = new WindowGame(250, 640, windowGame, app, this);
         app.setShowFPS(false);
-        this.addState(new Menu(startMenu, app));
-        this.addState(new WindowGame(250, 640, windowGame, app, this));
+        this.addState(new Menu(startMenu, app, wg));
+        this.addState(wg);
         this.enterState(startMenu);
-        
+
     }
 }

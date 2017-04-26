@@ -28,9 +28,11 @@ public class Menu extends BasicGameState {
     private AppGameContainer app;
     private Graphics g;
     private SoundFx sounds = new SoundFx();
+    private WindowGame wg;
 
-    public Menu(int startMenu, AppGameContainer app) throws SlickException {
+    public Menu(int startMenu, AppGameContainer app, WindowGame wg) throws SlickException {
         this.app = app;
+        this.wg = wg;
         menu = new Image("Images/menu.png");
     }
 
@@ -56,6 +58,7 @@ public class Menu extends BasicGameState {
             if (Mouse.isButtonDown(0)) {
                 sbg.enterState(2);
                 app.setDisplayMode(640, 250, false);
+                wg.setAI(false);
                 //   sounds.getItsMe().play();
 
             }
@@ -77,6 +80,9 @@ public class Menu extends BasicGameState {
 
             }
             if (Mouse.isButtonDown(0)) {
+                sbg.enterState(2);
+                wg.setAI(true);
+                app.setDisplayMode(640, 250, false);
 
             }
         }

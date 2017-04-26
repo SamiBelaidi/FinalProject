@@ -193,6 +193,34 @@ public class Mario {
 
     }
 
+    public void jumpMonstre() {
+        if (isBig()) {
+            sounds.getJumpSuper().play();
+        } else {
+            sounds.getJumpSmall().play();
+        }
+        Thread thread = new Thread(() -> {
+            int i = 0;
+            setState(State.JUMP);
+            window.setTouchesActives(false);
+            while (i < 30) {
+                if (goingRight) {
+                    setX(x + 1);
+                } else {
+                    setX(x - 1);
+                }
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException ex) {
+                }
+                setY(y - 2);
+                i++;
+            }
+            window.setTouchesActives(true);
+        });
+        thread.start();
+    }
+
     public int calculerVitesseX() {
         if (isMoving()) {
             if (isGoingRight()) {
