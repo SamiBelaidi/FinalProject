@@ -166,7 +166,7 @@ public class Mario {
 
     }
 
-    public void jump() {
+    public void jump(int hauteurJump) {
         conditionThread = true;
 
         if (isBig()) {
@@ -178,7 +178,7 @@ public class Mario {
         Thread thread = new Thread(() -> {
             int i = 0;
 
-            while (conditionThread && i < 70) {
+            while (conditionThread && i < hauteurJump) {
                 try {
                     Thread.sleep(10);
                 } catch (InterruptedException ex) {
@@ -200,13 +200,15 @@ public class Mario {
             sounds.getJumpSmall().play();
         }
         Thread thread = new Thread(() -> {
+            boolean movingBMonster = isMoving() == false;
             int i = 0;
             setState(State.JUMP);
             window.setTouchesActives(false);
             while (i < 30) {
-                if (goingRight) {
+
+                if (goingRight && !movingBMonster) {
                     setX(x + 1);
-                } else {
+                } else if (!movingBMonster) {
                     setX(x - 1);
                 }
                 try {
@@ -268,6 +270,7 @@ public class Mario {
 
     public void grandir() {
         big = true;
+        setY(y - 16);
         rectangle.setHeight(32);
 
     }
