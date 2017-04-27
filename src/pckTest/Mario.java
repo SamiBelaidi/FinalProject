@@ -181,7 +181,6 @@ public class Mario {
 
         Thread thread = new Thread(() -> {
             int i = 0;
-
             while (conditionThread && i < hauteurJump) {
                 try {
                     Thread.sleep(10);
