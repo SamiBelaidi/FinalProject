@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.AppGameContainer;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -26,6 +27,7 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 public class WindowGame extends BasicGameState {
 
+    Graphics g;
     private static int ID = 2;
     private int timer = 0;
     private float xOverLap, yOverLap;
@@ -336,11 +338,16 @@ public class WindowGame extends BasicGameState {
         }
         for (int i = 0; i < listeRectangles.size(); i++) {
             if (mario.getY() - listeRectangles.get(i).getY() <= 16
-                    && mario.getX() - listeRectangles.get(i).getX() >= 0
-                    && listeRectangles.get(i).getX() - mario.getX() == 16
-                    && mario.getState() != Mario.State.JUMP) {
-                mario.jump(70);
-                mario.setState(Mario.State.JUMP);
+                    && mario.getY() - listeRectangles.get(i).getY() >= 0
+                    && listeRectangles.get(i).getX() - mario.getX() == 48
+                    && mario.getState() != Mario.State.JUMP
+                    && doJump) {
+              //  mario.setMoving(false);
+                g.setColor(Color.red);
+                g.draw(listeRectangles.get(i));
+  mario.jump(70);
+                  mario.setState(Mario.State.JUMP);
+                  doJump = false;
             }
         }
     }
@@ -446,9 +453,8 @@ public class WindowGame extends BasicGameState {
 
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-        if (AI) {
-            intelligenceArtificielle();
-        }
+        this.g = g;
+
         this.map.render(map.getRenderX(), map.getRenderY());
         g.drawAnimation(mario.getAnimation(), mario.getX(), mario.getY());
         dessinerRectangles(g);
@@ -461,11 +467,14 @@ public class WindowGame extends BasicGameState {
         if (mario.getState() != Mario.State.DEAD) {
             gererCollisions(g);
         }
+        if (AI) {
+            intelligenceArtificielle();
+        }
 
         detecterFinGame();
         for (int i = 0; i < listeRectangles.size(); i++) {
             if (mario.getY() - listeRectangles.get(i).getY() <= 16
-                    && mario.getY() - listeRectangles.get(i).getY() >= 0
+                    && mario.getY() - listeRectangles.get(i).getY() > 0
                     && listeRectangles.get(i).getX() - mario.getX() == 24) {
 
             }
