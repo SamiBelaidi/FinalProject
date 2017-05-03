@@ -41,8 +41,10 @@ public class WindowGame extends BasicGameState {
     private ArrayList<Bougeable> listeChampignons = new ArrayList();
     private ArrayList<ArrayList<Bougeable>> listeObjets = new ArrayList();
     private ArrayList<Goomba> listeGoombas = new ArrayList();
+    private ArrayList<FakeRectangle> listeRectanglesObstacles = new ArrayList();
     private Image flag = new Image("Images/flag.png");
     private int compteur = 0;
+    private float hauteurObstacle;
     private GameContainer container;
     private Map map;
     private Animation animation;
@@ -326,28 +328,42 @@ public class WindowGame extends BasicGameState {
 
     private void creerWoombas() throws SlickException {
         Goomba Goomba = new Goomba(448, 208, 544, this);
-        listeGoombas.add(Goomba);
+        //      listeGoombas.add(Goomba);
 
     }
 
     private void intelligenceArtificielle() {
+        doJump = true;
         if (doMove) {
             mario.setGoingRight(true);
             mario.setMoving(true);
             doMove = false;
         }
         for (int i = 0; i < listeRectangles.size(); i++) {
-            if (mario.getY() - listeRectangles.get(i).getY() <= 16
-                    && mario.getY() - listeRectangles.get(i).getY() >= 0
-                    && listeRectangles.get(i).getX() - mario.getX() == 48
+            if (listeRectangles.get(i).getY() - mario.getY() < mario.getRectangle().getHeight()
+                    && listeRectangles.get(i).getY() - mario.getY() >= 0
+                    && (listeRectangles.get(i).getX() - mario.getX() == 17 || listeRectangles.get(i).getX() - mario.getX() == 16)
                     && mario.getState() != Mario.State.JUMP
                     && doJump) {
-              //  mario.setMoving(false);
-                g.setColor(Color.red);
-                g.draw(listeRectangles.get(i));
-  mario.jump(70);
-                  mario.setState(Mario.State.JUMP);
-                  doJump = false;
+                hauteurObstacle = listeRectangles.get(i).getY();
+                for (int j = 0; j < listeRectangles.size(); j++) {
+                    if (listeRectangles.get(j).getY() == hauteurObstacle - 16
+                            && listeRectangles.get(j).getX() == listeRectangles.get(i).getX()) {
+                        listeRectanglesObstacles.add(listeRectangles.get(j));
+                        hauteurObstacle = listeRectangles.get(j).getY();
+                    }
+                }
+
+                listeRectanglesObstacles.add(listeRectangles.get(i));
+                for (int x = 0; x < listeRectanglesObstacles.size(); x++) {
+                    g.setColor(Color.red);
+                    g.draw(listeRectanglesObstacles.get(x));
+                }
+                mario.setMoving(false);
+                mario.AIjump(hauteurObstacle);
+                mario.setState(Mario.State.JUMP);
+                doJump = false;
+                break;
             }
         }
     }

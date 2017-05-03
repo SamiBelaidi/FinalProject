@@ -170,6 +170,38 @@ public class Mario {
 
     }
 
+    public void AIjump(float hauteurObstacle) {
+        conditionThread = true;
+       
+        if (isBig()) {
+            sounds.getJumpSuper().play();
+        } else {
+            sounds.getJumpSmall().play();
+        }
+
+        Thread thread = new Thread(() -> {
+            int i = 0;
+            while (conditionThread) {
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException ex) {
+                }
+
+                setY(y - 2);
+                i++;
+
+                if (getY() < (hauteurObstacle - 64)) {
+                    //do nothing   
+                    setConditionThread(false);
+                    setMoving(true);
+                    break;
+                }
+
+            }
+        });
+        thread.start();
+    }
+
     public void jump(int hauteurJump) {
         conditionThread = true;
 
