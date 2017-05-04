@@ -157,7 +157,6 @@ public class WindowGame extends BasicGameState {
                 super.windowClosing(e);
 
             }
-
         }
         );
 
@@ -339,6 +338,14 @@ public class WindowGame extends BasicGameState {
             mario.setMoving(true);
             doMove = false;
         }
+
+        for (int i = 0; i < listeRectangles.size(); i++) {
+            if (listeRectangles.get(i).getX() - 17 == mario.getX() 
+                    && listeRectangles.get(i).getY() - 16 == mario.getY()) {
+                
+            }
+        }
+
         for (int i = 0; i < listeRectangles.size(); i++) {
             if (listeRectangles.get(i).getY() - mario.getY() < mario.getRectangle().getHeight()
                     && listeRectangles.get(i).getY() - mario.getY() >= 0

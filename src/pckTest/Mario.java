@@ -172,7 +172,7 @@ public class Mario {
 
     public void AIjump(float hauteurObstacle) {
         conditionThread = true;
-       
+
         if (isBig()) {
             sounds.getJumpSuper().play();
         } else {
@@ -199,7 +199,9 @@ public class Mario {
 
             }
         });
-        thread.start();
+        if (aTerre) {
+            thread.start();
+        }
     }
 
     public void jump(int hauteurJump) {
