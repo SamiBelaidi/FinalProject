@@ -86,7 +86,9 @@ public class Map extends TiledMap {
             bg.getListeWombas().get(i).setxMax(bg.getListeWombas().get(i).getxMax() - 1);
             bg.getListeWombas().get(i).setxMin(bg.getListeWombas().get(i).getxMin() - 1);
         }
+        for (int i = 0; i < listeCoins.size(); i++) {
+            listeCoins.get(i).setX(listeCoins.get(i).getX() - 1);
+        }
 
     }
-
 }

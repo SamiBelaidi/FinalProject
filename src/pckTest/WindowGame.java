@@ -320,6 +320,7 @@ public class WindowGame extends BasicGameState {
                 listeGoombas.get(i).setEcrase(true);
             }
         }
+      //  for(int i=0;i<listeObjets)
     }
 
     private void gererGravite() {

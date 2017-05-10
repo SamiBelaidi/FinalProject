@@ -30,8 +30,8 @@ public class Coin {
 
     public Coin(int x, int y) throws SlickException {
         rectangle = new FakeRectangle(x * 16, y * 16, 16, 16);
-        x = x * 16;
-        y = y * 16;
+        this.x = x * 16;
+        this.y = y * 16;
         initialiserAnimation();
     }
 
@@ -52,6 +52,10 @@ public class Coin {
 
     public int getX() {
         return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
     }
 
 }
