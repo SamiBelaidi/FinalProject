@@ -8,7 +8,10 @@ package pckTest;
 import com.sun.java.accessibility.util.AWTEventMonitor;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.AppGameContainer;
@@ -264,6 +267,10 @@ public class WindowGame extends BasicGameState {
         for (int i = 0; i < listeGoombas.size(); i++) {
             g.drawAnimation(listeGoombas.get(i).getAnimation(), listeGoombas.get(i).getX(), listeGoombas.get(i).getY());
         }
+        for (int i = 0; i < map.getListeCoins().size(); i++) {
+            g.drawAnimation(map.getListeCoins().get(i).getAnimation(), map.getListeCoins().get(i).getX(), map.getListeCoins().get(i).getY());
+        }
+
     }
 
     private void fillListObjets() {
@@ -333,7 +340,7 @@ public class WindowGame extends BasicGameState {
 
     private void intelligenceArtificielle() {
         boolean continu = false;
-       
+
         doJump = true;
         if (doMove) {
             mario.setGoingRight(true);
@@ -458,8 +465,9 @@ public class WindowGame extends BasicGameState {
 
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
+
         this.container = container;
-        map = new Map("map\\map.tmx", this);
+        map = new Map("map\\map.tmx", this, 1);
         this.mario = new Mario(true, map, this);
         creerRectangle();
         fillListObjets();
