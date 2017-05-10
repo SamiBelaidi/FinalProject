@@ -332,47 +332,54 @@ public class WindowGame extends BasicGameState {
     }
 
     private void intelligenceArtificielle() {
+        boolean continu = false;
+       
         doJump = true;
         if (doMove) {
             mario.setGoingRight(true);
             mario.setMoving(true);
             doMove = false;
         }
-
         for (int i = 0; i < listeRectangles.size(); i++) {
-            if (listeRectangles.get(i).getX() - 17 == mario.getX() 
-                    && listeRectangles.get(i).getY() - 16 == mario.getY()) {
-                
+
+            if (mario.getX() % 16 == 0 && mario.isaTerre()) {
+                if (listeRectangles.get(i).getX() - mario.getX() == 16 && listeRectangles.get(i).getY() - mario.getY() == 16) {
+                    // doMove = true;
+                    break;
+                }
             }
-        }
 
-        for (int i = 0; i < listeRectangles.size(); i++) {
-            if (listeRectangles.get(i).getY() - mario.getY() < mario.getRectangle().getHeight()
-                    && listeRectangles.get(i).getY() - mario.getY() >= 0
-                    && (listeRectangles.get(i).getX() - mario.getX() == 17 || listeRectangles.get(i).getX() - mario.getX() == 16)
-                    && mario.getState() != Mario.State.JUMP
-                    && doJump) {
-                hauteurObstacle = listeRectangles.get(i).getY();
-                for (int j = 0; j < listeRectangles.size(); j++) {
-                    if (listeRectangles.get(j).getY() == hauteurObstacle - 16
-                            && listeRectangles.get(j).getX() == listeRectangles.get(i).getX()) {
-                        listeRectanglesObstacles.add(listeRectangles.get(j));
-                        hauteurObstacle = listeRectangles.get(j).getY();
+        }
+        if (continu) {
+            for (int i = 0; i < listeRectangles.size(); i++) {
+                if (listeRectangles.get(i).getY() - mario.getY() < mario.getRectangle().getHeight()
+                        && listeRectangles.get(i).getY() - mario.getY() >= 0
+                        && (listeRectangles.get(i).getX() - mario.getX() == 17 || listeRectangles.get(i).getX() - mario.getX() == 16)
+                        && mario.getState() != Mario.State.JUMP
+                        && doJump) {
+                    hauteurObstacle = listeRectangles.get(i).getY();
+                    for (int j = 0; j < listeRectangles.size(); j++) {
+                        if (listeRectangles.get(j).getY() == hauteurObstacle - 16
+                                && listeRectangles.get(j).getX() == listeRectangles.get(i).getX()) {
+                            listeRectanglesObstacles.add(listeRectangles.get(j));
+                            hauteurObstacle = listeRectangles.get(j).getY();
+                        }
                     }
-                }
 
-                listeRectanglesObstacles.add(listeRectangles.get(i));
-                for (int x = 0; x < listeRectanglesObstacles.size(); x++) {
-                    g.setColor(Color.red);
-                    g.draw(listeRectanglesObstacles.get(x));
+                    listeRectanglesObstacles.add(listeRectangles.get(i));
+                    for (int x = 0; x < listeRectanglesObstacles.size(); x++) {
+                        g.setColor(Color.red);
+                        g.draw(listeRectanglesObstacles.get(x));
+                    }
+                    doMove = false;
+                    mario.AIjump(hauteurObstacle);
+                    mario.setState(Mario.State.JUMP);
+                    doJump = false;
+                    break;
                 }
-                mario.setMoving(false);
-                mario.AIjump(hauteurObstacle);
-                mario.setState(Mario.State.JUMP);
-                doJump = false;
-                break;
             }
         }
+
     }
 
     private float calculateIntersectsY(float xa1, float xa2, float ya1, float ya2, float xb1, float xb2, float yb1, float yb2) {
